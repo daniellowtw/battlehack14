@@ -26,5 +26,12 @@
 			</div>
 			<button type="button" class="btn btn-default" ng-click="logReg()">Submit</button>
 		</form>
+		<br>
+		<div class="alert alert-danger" ng-show="error">
+			<strong>Ooops...</strong> Either the password is wrong or the username is taken.
+		</div>
+		<div class="alert alert-success" ng-show="success">
+			<strong>Chill</strong> You are in.
+		</div>
 	</div></div>
 </div></div>
