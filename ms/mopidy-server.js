@@ -1,4 +1,3 @@
-
 var Mopidy = require("mopidy");
 
 
@@ -22,13 +21,16 @@ var MopidyQueue = function (config) {
 	this.getCurrentTrack = function(callback) {
 		if (this.ready) {
 			this.mopidy.playback.getCurrentTrack().done(function(track){
-				return track;
+				callback({
+					success: true,
+					track: track
+				});
 			});
 		} else {
-			return {"error": "not ready to return a track"};
+			return {success:false,error: "not ready to return a track"};
 		}
 			
-	}
+	};
 };
 
 
