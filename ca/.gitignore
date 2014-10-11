@@ -10,5 +10,5 @@ lib-cov
 pids
 logs
 results
-config.js
+jambox.js
 npm-debug.log
