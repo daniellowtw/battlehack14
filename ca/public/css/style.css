@@ -1,1 +1,14 @@
 body { padding-top:70px; }
+table.playlist td {
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table.playlist th {
+	text-transform: uppercase;
+	color: #ccc;
+	font-weight: normal;
+	letter-spacing: 1px;
+}

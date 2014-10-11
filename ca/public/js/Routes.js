@@ -13,6 +13,11 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 			controller: 'BTController'
 		})
 
+		.when('/queue', {
+			templateUrl: 'views/queue.html',
+			// controller: 'GeekController'	
+		});
+
 		// .when('/geeks', {
 		// 	templateUrl: 'views/geek.html',
 		// 	controller: 'GeekController'	
