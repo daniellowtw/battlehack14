@@ -10,7 +10,6 @@ var config = module.parent.exports.config;
 /* APPLICATION ROUTES */
 
 app.get('/add/:name/:address', function(req, res) {
-    // TODO Check duplicate
     api.saveJukebox(req.params.name, req.params.address, function(x) {
         res.json(x)
     });
@@ -24,7 +23,6 @@ app.get('/find_jukebox/:name', function(req, res) {
 });
 
 app.get('/jukes', function(req, res) {
-    console.log(1)
     api.listJukeboxes(function(x) {
         res.json(x)
     });

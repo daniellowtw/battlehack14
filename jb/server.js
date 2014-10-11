@@ -1,15 +1,30 @@
-'use strict';
+// 'use strict';
 
-var express = require('express')
+var sleep = require('sleep');
+
+var express = require('express');
 module.exports.express = express;
-var app = express()
+var app = express();
 
 var config = require("./config");
 module.exports.config = config;
 
 module.exports.app = app;
 
-var api = require("./api");
+var API = require("./api");
+
+// start mopidy server
+var exec = require('child_process').exec;
+exec('/usr/bin/mopidy', function (error, stdout, stderr) {
+  console.log("MOPIDY: server started");
+});
+
+sleep.sleep(6);
+
+var api = new API({
+	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
+	callingConvention: "by-position-or-by-name"
+});
 module.exports.api = api;
 
 require("./routes");
@@ -22,5 +37,6 @@ app.get('/*', function(req, res) {
 // set the default directory for templated pages
 app.set("views", __dirname + "/client");
 
-// listen on port 8000
+// listen on selected port
 app.listen(config.port);
+console.log("Music server running on port " + config.port );

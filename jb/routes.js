@@ -3,10 +3,7 @@
 var app = module.parent.exports.app;
 var express = module.parent.exports.express;
 var api = module.parent.exports.api;
-var bodyParser = require('body-parser')
-var request = require('request');
-var config = module.parent.exports.config;
-
+var bodyParser = require('body-parser');
 
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({
@@ -15,51 +12,55 @@ app.use(bodyParser.urlencoded({
 
 /* APPLICATION ROUTES */
 
+var notImplemented = {
+    success: false,
+    error: "Not Implemented"
+};
+
 app.get('/', function(req, res) {
     res.json(api.test());
 });
 
-app.post('/add_track', function(req, res) {
-    // TODO: tidy object received before marshalling to MS?
-    if (req.body)
-        console.log("adding track " + req.body);
-    request.post(config.ms.address + "/track/", req.body, function(e, r, b) {
-        if (e) {
-            console.log(e)
-        }
-        if (!e && r.statusCode == 200) {
-            // TODO: handle success
-            res.send('ok')
-        }
-    });
+// post a new track submission
+app.post('/track', function(req, res) {
+    if (req.body.uri)
+        api.add(req.body.uri, function (result) {
+            res.json(result);
+        });
+    else 
+        res.json({success:false, error: "invalid object provided"});
 });
 
-app.get('/get_queue', function(req, res) {
-    api.getQueue(function(x) {
-        res.json(x)
-    })
-});
+// get current queue including now playing
+app.get('/queue', function(req, res) {
+    api.getQueue(function(result) {
+        res.json(result);
+    });});
 
 app.get('/upvote/:id', function(req, res) {
-    api.upvote(req.params.id, function(x) {
-        res.json(x)
+    res.json(notImplemented);
+});
+
+// reorder tracks
+app.get('/queue/:from/:to', function(req, res) {
+    api.move(req.params.from, req.params.to, function(result) {
+        res.json(result);
     });
 });
 
-app.get('/search/:source/:term', function(req, res) {
-    api.search(req.params.source, req.params.term, function(x) {
-        res.json(x)
+// get search results
+app.get('/search/:query', function(req, res) {
+    var query = req.params.query;
+    api.search(query, function(result) {
+        res.json(result);
     });
 });
 
-app.get('/now_playing', function(req, res) {
-    api.nowPlaying(function(x) {
-        res.json(x)
+// get current track
+app.get('/track', function(req, res) {
+    api.getCurrentTrack(function(x) {
+        res.json(x);
     });
-});
-
-app.post('/api/responses/', function(req, res) {
-
 });
 
 app.use('/', express.static(__dirname + '/assets'));
