@@ -1,13 +1,16 @@
-angular.module('Controllers', []).controller('MainController', function($scope, $location) {
+angular.module('Controllers', []).controller('MainController', function($scope, $location, $timeout) {
 
   $scope.$on('$routeChangeSuccess', function () {
     $scope.user = Parse.User.current();
   });
 
   $scope.$on('loginSuccess',function(e,user){
-    console.log(user);
+    $scope.success = true;
     $scope.user = user;
-    $location.path('/find');
+    $timeout(function(){
+      $location.path('/find');
+      $scope.success = false;
+    },1500);
   });
 
 }).controller('HomeController', function($scope) {
@@ -35,10 +38,10 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
             $scope.error = true;
             $scope.$apply();
           }
-        })
+        });
       }
-    })
-  }
+    });
+  };
 
 }).controller('BTController', function($scope, $location, clientTokenR){
   $scope.$on('$routeChangeSuccess', function () {
