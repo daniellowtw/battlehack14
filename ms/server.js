@@ -30,7 +30,9 @@ app.get('/search/:source/:term', function(req, res) {
 
 // get current track
 app.get('/track', function(req, res) {
-	mopidy.getCurrentTrack(res.json);
+	mopidy.getCurrentTrack(function (result) {
+		res.json(result);
+	});
 });
 
 // get current queue
@@ -45,9 +47,10 @@ app.get('/queue/:from/:to', function(req, res) {
 
 // post a new track submission
 app.post('/track', function(req, res) {
-	console.log(req.body);
 	if (req.body.uri)
-		mopidy.add(req.body.uri, res.json);
+		mopidy.add(req.body.uri, function (result) {
+			res.json(result);
+		});
 	else 
 		res.json({success:false, error: "invalid object provided"});
 });

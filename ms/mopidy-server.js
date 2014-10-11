@@ -11,11 +11,22 @@ var MopidyQueue = function (config) {
 
 	this.add = function (uri, callback) {
 		if (this.ready) {
-			this.mopidy.tracklist.add(uri).done(function(track) {
-				callback({
-					success:true,
-					track: track
+			var parent = this;
+			this.mopidy.tracklist.add({uri:uri}).done(function(track) {
+				parent.mopidy.tracklist.getLength().done(function(l) {
+					if (l==1) {
+						parent.mopidy.playback.play();
+					}
+					callback({
+						success:true,
+						track: track
+					});
 				});
+			});
+		} else {
+			callback({
+				success: false,
+				error: "not ready to add tracks"
 			});
 		}
 	};
