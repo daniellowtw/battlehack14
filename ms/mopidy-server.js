@@ -66,10 +66,10 @@ var MopidyQueue = function (config) {
 	this.search = function(query, callback) {
 		var words = query.split(" ");
 		if (this.ready) {
-			mopidy.library.search({'any': words}).done(function(tracks) {
+			this.mopidy.library.search({'any': words}).done(function(results) {
 				callback({
 					"success": true,
-					"tracks": tracks
+					"results": results
 				});
 			});
 		} else {
@@ -79,6 +79,21 @@ var MopidyQueue = function (config) {
 			});
 		}
 	};
+
+	this.move = function (start, to_position, callback) {
+		if (this.ready) {
+			this.mopidy.tracklist.move(start, start+1, to_position)
+				.catch(function(e){
+					callback({success:false, error: e});
+				})
+				.done(function() {
+					callback({success:true})
+				});
+		} else {
+			callback({success: false, error: "not ready to search"});
+		}
+	}
+
 };
 
 module.exports = MopidyQueue;

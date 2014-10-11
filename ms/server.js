@@ -47,7 +47,9 @@ app.get('/queue', function(req, res) {
 
 // reorder tracks
 app.get('/queue/:from/:to', function(req, res) {
-	res.json(notImplemented);
+	mopidy.move(req.params.from, req.params.to, function(result) {
+		res.json(result);
+	});
 });
 
 // post a new track submission
