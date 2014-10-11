@@ -5,7 +5,7 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 		// home page
 		.when('/', {
 			templateUrl: 'views/home.html',
-			controller: 'MainController'
+			controller: 'HomeController'
 		})
 
 		.when('/braintree', {
