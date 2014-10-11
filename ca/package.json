@@ -2,10 +2,10 @@
   "name": "mean-starter-kit",
   "main": "server.js",
   "dependencies": {
-    "express" : "latest",
-	"mongoose" : "latest",
-	"body-parser" : "latest",
-	"method-override" : "latest"
+    "express": "latest",
+    "mongoose": "latest",
+    "body-parser": "latest",
+    "method-override": "latest",
+    "parse": "^1.3.0"
   }
 }
-
