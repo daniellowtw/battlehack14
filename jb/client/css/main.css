@@ -1,0 +1,22 @@
+.search{
+    margin: 10px;
+}
+
+.inline{
+    display: inline;
+}
+
+.t-row {
+    display: table-row;
+    border: 1px solid black;
+}
+
+.t-cell {
+    display: table-cell;
+    padding: 5px 3px;
+    border: 1px solid black;
+}
+
+.t-table{
+    display: table;
+}
