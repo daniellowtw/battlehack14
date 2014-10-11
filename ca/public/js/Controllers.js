@@ -63,4 +63,20 @@ angular.module('Controllers', []).controller('MainController', function($scope) 
       });
     });
   });
+}).controller('FindController', function($http, $scope, clientTokenR){
+  $scope.result = [];
+  $http.get('/jukes').success(function(x){
+    // $scope.$apply($scope.result = x)
+    $scope.result = x
+  })
+  $scope.joinServer = function(name){
+    console.log($scope.serverName);
+    if (name === undefined && $scope.serverName){
+      var name = $scope.serverName;
+    }
+    console.log(name);
+    $http.get('/find_jukebox/'+name).success(function(x){
+      console.log(x)
+    })
+  }
 });
