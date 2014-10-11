@@ -66,7 +66,7 @@ var MopidyQueue = function (config) {
 	this.search = function(query, callback) {
 		var words = query.split(" ");
 		if (this.ready) {
-			mopidy.library.search({'any': words}, uris=['spotify:']).done(function(tracks) {
+			mopidy.library.search({'any': words}).done(function(tracks) {
 				callback({
 					"success": true,
 					"tracks": tracks
