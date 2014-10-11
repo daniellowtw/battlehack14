@@ -1,5 +1,7 @@
 // 'use strict';
 
+var sleep = require('sleep');
+
 var express = require('express');
 module.exports.express = express;
 var app = express();
@@ -11,7 +13,13 @@ module.exports.app = app;
 
 var API = require("./api");
 
-// TODO: Start mopidy here rather than in advance
+// start mopidy server
+var exec = require('child_process').exec;
+exec('/usr/bin/mopidy', function (error, stdout, stderr) {
+  console.log("MOPIDY: server started");
+});
+
+sleep.sleep(6);
 
 var api = new API({
 	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
@@ -31,3 +39,4 @@ app.set("views", __dirname + "/client");
 
 // listen on selected port
 app.listen(config.port);
+console.log("Music server running on port " + config.port );
