@@ -1,0 +1,10 @@
+{
+  "name": "MusicServer",
+  "main": "server.js",
+  "dependencies": {
+        "express": "latest",
+        "body-parser": "latest",
+        "mopidy": "latest"
+  }
+}
+

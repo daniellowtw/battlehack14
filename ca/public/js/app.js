@@ -1,0 +1,1 @@
+angular.module('meanStarter', ['ngRoute', 'Routes', 'Controllers', 'Services', 'Directives']);

@@ -1,18 +1,23 @@
-
 var Mopidy = require("mopidy");
-
-
 
 var MopidyQueue = function (config) {
 	
 	this.mopidy = new Mopidy(config);
 	this.ready = false;
+	var parent = this;
 	this.mopidy.on("state:online", function () {
-		this.ready = true;
+		parent.ready = true;
 	});
 
-	this.add = function (callback) {
-		// TODO: add song from spotify to queue
+	this.add = function (uri, callback) {
+		if (this.ready) {
+			this.mopidy.tracklist.add(uri).done(function(track) {
+				callback({
+					success:true,
+					track: track
+				});
+			});
+		}
 	};
 
 	this.getQueue = function (callback) {
@@ -24,22 +29,30 @@ var MopidyQueue = function (config) {
 				});
 			});
 		} else {
-			return {"success": false, "error" : "not ready to return tracks"};
+			callback({
+				"success": false,
+				"error" : "not ready to return tracks"
+			});
 		}
 	};
 
 	this.getCurrentTrack = function(callback) {
 		if (this.ready) {
 			this.mopidy.playback.getCurrentTrack().done(function(track){
-				return track;
+				callback({
+					success: true,
+					track: track
+				});
 			});
 		} else {
-			return {"error": "not ready to return a track"};
+			callback({
+				success:false,
+				error: "not ready to return a track"
+			});
 		}
-	}
+	};
 
 	this.search = function(query, callback) {
-		// TODO: return a list of search results
 		var words = query.split(" ");
 		if (this.ready) {
 			mopidy.library.search({'any': words}, uris=['spotify:']).done(function(tracks) {
@@ -49,12 +62,12 @@ var MopidyQueue = function (config) {
 				});
 			});
 		} else {
-			return {"success": false, "error": "not ready to search"};
+			callback({
+				"success": false,
+				"error": "not ready to search"
+			});
 		}
-		
-
 	};
 };
-
 
 module.exports = MopidyQueue;
