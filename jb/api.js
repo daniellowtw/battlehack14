@@ -13,8 +13,7 @@ var API = function (config) {
     
     this.upvote = function(id, cb) {
         console.log("upvoting id " + id);
-        //TODO: Check with ca whether user have credit
-        //TODO: confirm address
+        //TODO: Check with ca whether user have credit (NOT FOR DEMO)
         //TODO reorder list
     };
 
