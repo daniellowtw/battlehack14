@@ -1,1 +1,1 @@
-angular.module('meanStarter', ['ngRoute', 'Routes', 'Controllers', 'Services', 'Directives']);
+angular.module('playlister', ['ngRoute', 'Routes', 'Controllers', 'Services', 'Directives']);
