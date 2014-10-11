@@ -5,18 +5,36 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 		// home page
 		.when('/', {
 			templateUrl: 'views/home.html',
-			controller: 'MainController'
+			controller: 'HomeController'
 		})
 
-		// .when('/nerds', {
-		// 	templateUrl: 'views/nerd.html',
-		// 	controller: 'NerdController'
-		// })
+		.when('/braintree', {
+			templateUrl: 'views/braintree.html',
+			controller: 'BTController'
+		})
+
+
+		.when('/queue', {
+			templateUrl: 'views/queue.html',
+			// controller: 'GeekController'	
+		})
 
 		// .when('/geeks', {
 		// 	templateUrl: 'views/geek.html',
 		// 	controller: 'GeekController'	
-		// });
+		// })
+
+		.when('/find', {
+			templateUrl: 'views/find.html'
+			// controller: 'GeekController'	
+		})
+
+		.when('/prefs', {
+			templateUrl: 'views/prefs.html'
+			// controller: 'GeekController'	
+		});
+
+
 
 	$locationProvider.html5Mode(true);
 

@@ -1,5 +1,30 @@
-<div class="jumbotron text-center">
-	<h1>Home Page 4 Life</h1>
+<div class="row splash"><div class="col-md-6 col-md-offset-3">
+	<div class="jumbotron text-center">
+		<h1>Jambox</h1>
 
-	<p>{{ tagline }}</p>
-</div>
+		<h2 class="text-muted">Your music, right here.</h2>
+	</div>
+</div></div>
+<div class="row"><div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default"><div class="panel-body text-center">
+		<!-- <h2>Find a jambox</h2><br>
+		<form class="form-inline" role="form">
+			<div class="form-group">
+				<input type="jambox_name" class="form-control" id="jambox_name" placeholder="Jambox Name">
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-primary" id="search">Search</button>
+			</div>
+		</form> -->
+		<form role="form">
+			<h3>Login or register</h3><br>
+			<div class="form-group">
+				<input type="text" class="form-control" id="username" placeholder="Enter username" ng-model="username">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" id="password" placeholder="Password" ng-model="password">
+			</div>
+			<button type="button" class="btn btn-default" ng-click="logReg()">Submit</button>
+		</form>
+	</div></div>
+</div></div>

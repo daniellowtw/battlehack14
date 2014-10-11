@@ -1,1 +1,1 @@
-angular.module('meanStarter', ['ngRoute', 'Routes', 'Controllers', 'Services', 'Directives']);
+angular.module('jambox', ['ngRoute', 'ngResource', 'Routes', 'Controllers', 'Services', 'Directives']);

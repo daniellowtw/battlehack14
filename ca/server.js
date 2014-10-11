@@ -5,9 +5,8 @@ var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var Parse          = require('parse').Parse;
-var config         = require('./config')
-
-var port = process.env.PORT || 8080; // set our port
+var config         = require('./jambox');
+var port = config.port;
 // mongoose.connect(process.env.MONGOHQ_URL); // connect to our mongoDB database (commented out after you enter in your own credentials)
 
 // Set up parse stuff

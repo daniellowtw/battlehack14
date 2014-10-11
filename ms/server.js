@@ -5,7 +5,10 @@ var express = require("express");
 var bodyParser = require('body-parser');
 var app = express();
 var MopidyQueue = require("./mopidy-server");
-var mopidy = new MopidyQueue();
+var mopidy = new MopidyQueue({
+	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
+	callingConvention: "by-position-or-by-name"
+});
 // use body parser to interpret json
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -20,31 +23,41 @@ var notImplemented = {
 	error: "Not Implemented"
 };
 
-// get search results for the given source
-app.get('/search/:source/:term', function(req, res) {
-	res.json(notImplemented);
+// get search results
+app.get('/search/:query', function(req, res) {
+	var query = req.params.query;
+	mopidy.search(query, function(result) {
+		res.json(result);
+	});
 });
 
 // get current track
 app.get('/track', function(req, res) {
-	mopidy.getCurrentTrack(res.json);
+	mopidy.getCurrentTrack(function (result) {
+		res.json(result);
+	});
 });
 
 // get current queue
 app.get('/queue', function(req, res) {
-	res.json(notImplemented);
+	mopidy.getQueue(function(result) {
+		res.json(result);
+	});
 });
 
 // reorder tracks
 app.get('/queue/:from/:to', function(req, res) {
-	res.json(notImplemented);
+	mopidy.move(req.params.from, req.params.to, function(result) {
+		res.json(result);
+	});
 });
 
 // post a new track submission
 app.post('/track', function(req, res) {
-	console.log(req.body);
 	if (req.body.uri)
-		mopidy.add(req.body.uri, res.json);
+		mopidy.add(req.body.uri, function (result) {
+			res.json(result);
+		});
 	else 
 		res.json({success:false, error: "invalid object provided"});
 });
