@@ -1,15 +1,22 @@
-'use strict';
+// 'use strict';
 
-var express = require('express')
+var express = require('express');
 module.exports.express = express;
-var app = express()
+var app = express();
 
 var config = require("./config");
 module.exports.config = config;
 
 module.exports.app = app;
 
-var api = require("./api");
+var API = require("./api");
+
+// TODO: Start mopidy here rather than in advance
+
+var api = new API({
+	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
+	callingConvention: "by-position-or-by-name"
+});
 module.exports.api = api;
 
 require("./routes");
@@ -22,5 +29,5 @@ app.get('/*', function(req, res) {
 // set the default directory for templated pages
 app.set("views", __dirname + "/client");
 
-// listen on port 8000
+// listen on selected port
 app.listen(config.port);
