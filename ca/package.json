@@ -6,6 +6,7 @@
     "braintree": "^1.19.0",
     "express": "latest",
     "method-override": "latest",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "parse": "^1.3.0"
   }
 }
