@@ -8,15 +8,21 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 			controller: 'MainController'
 		})
 
-		// .when('/nerds', {
-		// 	templateUrl: 'views/nerd.html',
-		// 	controller: 'NerdController'
-		// })
+		.when('/braintree', {
+			templateUrl: 'views/braintree.html',
+			controller: 'BTController'
+		})
 
-		// .when('/geeks', {
-		// 	templateUrl: 'views/geek.html',
-		// 	controller: 'GeekController'	
-		// });
+		.when('/find', {
+			templateUrl: 'views/find.html'
+			// controller: 'GeekController'	
+		})
+
+		.when('/prefs', {
+			templateUrl: 'views/prefs.html'
+			// controller: 'GeekController'	
+		});
+
 
 	$locationProvider.html5Mode(true);
 
