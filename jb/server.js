@@ -31,3 +31,4 @@ app.set("views", __dirname + "/client");
 
 // listen on selected port
 app.listen(config.port);
+console.log("Music server running on port " + config.port );

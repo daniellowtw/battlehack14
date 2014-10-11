@@ -1,6 +1,5 @@
 var config = module.parent.exports.config;
 var serverAddress = config.cserver;
-var request = require('request');
 var Mopidy = require("mopidy");
 
 var API = function (config) {
