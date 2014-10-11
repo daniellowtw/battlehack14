@@ -1,1 +1,1 @@
-angular.module('playlister', ['ngRoute', 'Routes', 'Controllers', 'Services', 'Directives']);
+angular.module('playlister', ['ngRoute', 'ngResource', 'Routes', 'Controllers', 'Services', 'Directives']);
