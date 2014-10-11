@@ -33,16 +33,27 @@ app.post('/track', function(req, res) {
 
 // get current queue including now playing
 app.get('/queue', function(req, res) {
-    res.json(notImplemented);
-});
+    api.getQueue(function(result) {
+        res.json(result);
+    });});
 
 app.get('/upvote/:id', function(req, res) {
     res.json(notImplemented);
 });
 
-// get search results for the given source
-app.get('/search/:source/:term', function(req, res) {
-    res.json(notImplemented);
+// reorder tracks
+app.get('/queue/:from/:to', function(req, res) {
+    api.move(req.params.from, req.params.to, function(result) {
+        res.json(result);
+    });
+});
+
+// get search results
+app.get('/search/:query', function(req, res) {
+    var query = req.params.query;
+    api.search(query, function(result) {
+        res.json(result);
+    });
 });
 
 // get current track
