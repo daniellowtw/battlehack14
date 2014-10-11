@@ -10,6 +10,10 @@ var API = function (config) {
     this.mopidy.on("state:online", function () {
         parent.ready = true;
     });
+
+    this.mopidy.on("event:track_playback_ended", function() {
+        console.log("track playbacj ended");
+    })
     
     this.upvote = function(id, cb) {
         console.log("upvoting id " + id);
