@@ -27,6 +27,7 @@ module.exports = function(Parse) {
         },
 
         saveJukebox: function(name, address, cb) {
+            console.log(Parse)
             var query = new Parse.Query(jukeboxes);
             query.equalTo("name", name);
             query.find({

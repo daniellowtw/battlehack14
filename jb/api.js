@@ -5,17 +5,20 @@ var serverAddress = config.cserver;
 var Mopidy = require("mopidy");
 var Queue = require("./Queue.js");
 
-var API = function (config, jambox, socket) {
-
+var API = function (config, jambox, io) {
     this.mopidy = new Mopidy(config);
     this.queue = new Queue();
     this.skipvotes = [];
     this.ready = false;
+    var sockets = [];
+    io.on('connection', function(socket){
+        sockets.push(socket);
+        console.log('a user connected');
+    });
     var parent = this;
     this.mopidy.on("state:online", function () {
         parent.ready = true;
     });
-
     this.mopidy.on("event:trackPlaybackEnded", function() {
         // TODO: tell daniel that track has ended
         parent.onTrackEnd();
@@ -23,7 +26,9 @@ var API = function (config, jambox, socket) {
 
     this.mopidy.on("event:trackPlaybackStarted", function() {
         console.log("track started");
-        socket.sendNowPlaying();
+        for (var i = sockets.length - 1; i >= 0; i--) {
+            sockets[i].emit("nowPlayingUpdate", {});
+        };
     });
     
     this.onTrackEnd = function () {

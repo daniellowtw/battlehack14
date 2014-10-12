@@ -20,7 +20,7 @@
                         <th style="width:60px"></th>
                     </tr>
                     <tr ng-repeat="x in playlist">
-                        <td>{{x.track.name}}</td>
+                        <td><i ng-class="getClass(x.track.uri)" class="fa fa-lg"></i>  {{x.track.name}}</td>
                         <td>{{x.track.artists[0].name}}</td>
                         <td style="color:#ccc;">{{x.track.length | date:'mm:ss'}}</td>
                         <td><i class="fa fa-arrow-circle-o-up fa-lg" ng-click="upvote(x.id)"></i> <span
@@ -66,7 +66,7 @@
 
                 <br>
 
-                <h3>Spotify</h3>
+                <h3><i class="fa fa-spotify fa-lg"></i> Spotify</h3>
                 <table class="playlist table table-striped">
                     <tr>
                         <th>Track</th>
@@ -85,7 +85,7 @@
 						<td><span ng-click="addTrack(track.uri)" data-dismiss="modal" class="glyphicon glyphicon-plus pull-right"></span></td>
                     </tr>
                 </table>
-                <h3>Soundcloud</h3>
+                <h3><i class="fa fa-soundcloud fa-lg"></i> Soundcloud</h3>
                 <table class="playlist table table-striped">
                     <tr>
                         <th>Track</th>
@@ -104,7 +104,7 @@
 						<td><span ng-click="addTrack(track.uri)" data-dismiss="modal" class="glyphicon glyphicon-plus pull-right"></span></td>
                     </tr>
                 </table>
-                <h3>Server</h3>
+                <h3><i class="fa fa-file-audio-o fa-lg"></i> Server</h3>
                 <table class="playlist table table-striped">
                     <tr>
                         <th>Track</th>
