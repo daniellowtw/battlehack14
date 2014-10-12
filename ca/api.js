@@ -2,6 +2,8 @@ var config = module.parent.exports.config;
 
 module.exports = function(Parse) {
     var jukeboxes = Parse.Object.extend("jukeboxes");
+    var Payee = Parse.Object.extend("Payee");
+    var Payee_alias = Parse.Object.extend("Payee_alias");
     var User = Parse.Object.extend("User");
     return {
         findJukebox: function(name, cb) {
@@ -13,7 +15,9 @@ module.exports = function(Parse) {
                     if (results.length == 1) {
                         cb(results)
                     } else {
-                        cb({error:"No such server"})
+                        cb({
+                            error: "No such server"
+                        })
                     }
                 },
                 error: function(error) {
@@ -122,6 +126,50 @@ module.exports = function(Parse) {
             }, function(error) {
                 console.log(error)
             });
+        },
+        addPayment: function(payeeId, amount) {
+            var q1 = new Parse.query(Payee);
+            q1.get(payeeId, {success:function(x){
+                x.set('amount', x.get('amount') + amount)
+                x.save(null, {success:true})
+            }})
+        },
+
+        processUpvote: function(userToken, p) {
+            Parse.User.become(userToken).then(function(user) {
+                user.set('credit', user.get('credit') + amount);
+                user.save(null, {
+                    success: function(x) {
+                        var proportion = user.get('pref').proportion
+                        // pay people
+                        var acc = 0;
+                        var query = new Parse.query(Payee_alias)
+                        query.equalTo("alias", p.uri);
+                        query.find({
+                            success: function(results) {
+                                // Do something with the returned Parse.Object values
+                                if (results.length == 1) {
+                                    this.addPayment(results.get('payee_id'),p.amount*proportion[0])
+                                } else {
+                                    //add share to charity
+
+                                }
+                            },
+                            error: function(error) {
+                                alert("Error: " + error.code + " " + error.message);
+                            }
+                        })
+                    },
+                    error: function() {
+                        console.log("error proccesing upvote")
+                    }
+                });
+            }, function(error) {
+                console.log(error)
+            });
+
+
+
         }
 
 
