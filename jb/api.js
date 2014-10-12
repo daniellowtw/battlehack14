@@ -71,7 +71,7 @@ var API = function (config, jambox, io) {
         this.skipvotes.push(user_id);
         console.log(this.skipvotes);
         if (this.skipvotes.length > jambox.skipThreshold) {
-            this.mopidy.playback.stop([true]).done(function() {
+            this.mopidy.playback.pause().done(function() {
                 parent.onTrackEnd();
             });
         }
