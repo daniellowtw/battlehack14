@@ -98,13 +98,29 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
 // //    );
 //   }
   $scope.search = function(){
-    console.log('k');
     jukebox.search.get({ip:'192.168.7.66:3000',term:'fancy'},function(res){
       console.log(res);
-    });    
+      if(res.success){
+        $scope.res = res.results;
+      }
+    }); 
+    $scope.convert = function(length) {
+      min = (length/1000/60) << 0,
+      sec = (length/1000) % 60;
+
+      return (min + ':' + sec);
+    }
+    $scope.limitFilter = function (obj) {
+      var re = new RegExp($scope.search, 'i');
+      return !$scope.search || re.test(obj.headline) || re.test(obj.tagline) || re.test(obj.text);
+    }
   }
   $scope.playlist = [];
   console.log($scope.$parent.server)
+}).filter('slice', function() {
+  return function(arr, start, end) {
+    if (arr) return arr.slice(start, end);
+  };
 }).controller('PrefController', function($http, $scope, clientTokenR, $location){
   $scope.logout = function(){
     Parse.User.logOut();
