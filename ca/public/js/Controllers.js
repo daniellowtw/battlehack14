@@ -94,7 +94,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     $location.path('/find')
   }
   $scope.search = function () {
-    jukebox.search.get({ip: '192.168.7.66:3000', term: 'fancy'}, function (res) {
+    jukebox.search.get({ip: $scope.$parent.server, term: $scope.songSearch}, function (res) {
       console.log(res);
       if (res.success) {
         $scope.res = res.results;

@@ -35,10 +35,10 @@
 			<div class="modal-body">
 				<form class="form-inline" role="form">
 					<div class="form-group has-feedback">
-						<input type="text" class="form-control" id="search-song" placeholder="Search for a song">
+						<input type="text" class="form-control" id="search-song" placeholder="Search for a song" ng-model="songSearch" ng-change="search()">
 						<span class="glyphicon glyphicon-search form-control-feedback"></span>
 					</div>
-					<button type="submit" class="btn btn-default" ng-click="search()">Search</button>
+					<!--<button type="submit" class="btn btn-default" ng-click="search()">Search</button>-->
 				</form><br>
 				<table class="playlist table table-striped">
 					<tr>
@@ -55,7 +55,7 @@
 							</span>
 						</td>
 						<td style="color:#ccc;">{{convert(track.length)}}</td>
-						<td><a href="#"><span class="glyphicon glyphicon-plus pull-right"></span></a></td>
+						<td><a href=""><span class="glyphicon glyphicon-plus pull-right"></span></a></td>
 					</tr>
 <!-- 					<tr>
 						<td>Dearly Departed (feat. Esmé Patterson)</td>
