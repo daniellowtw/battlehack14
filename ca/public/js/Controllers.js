@@ -7,9 +7,12 @@ $scope.adminMode =false;
     console.log('admin mode');
   }
 
-  $scope.$on('$routeChangeSuccess', function () {
+  $scope.$on('$locationChangeSuccess', function () {
     $scope.user = Parse.User.current();
-    $scope.user.fetch();
+    Parse.User.current().fetch().then(function(user){
+      $scope.user = user;
+      $scope.$apply();
+    });
     if (!$scope.user) {
       // no user, so bring them to log in page
       $location.path('/')
@@ -178,7 +181,13 @@ $scope.adminMode =false;
   return function (arr, start, end) {
     if (arr) return arr.slice(start, end);
   };
-}).controller('PrefController', function ($http, $scope, clientTokenR, $location) {
+}).controller('PrefController', function ($http, $scope, clientTokenR, $location, $routeParams) {
+
+  $scope.$on('$routeChangeSuccess',function(){
+    console.log($routeParams);
+    $scope.success = $routeParams.success;
+  });
+
   $scope.logout = function () {
     Parse.User.logOut();
     $location.path('/');
