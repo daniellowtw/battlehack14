@@ -23,7 +23,13 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
       $location.path('/queue');
       $scope.success = false;
     },0);
-  })
+  });
+
+  $scope.logOut = function() {
+    Parse.User.logOut();
+    $scope.user = Parse.User.current();
+    $location.path('/');
+  }
 
 
 
@@ -84,11 +90,13 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
       console.log(x)
     })
   }
-}).controller('QueueController', function($http, $scope, clientTokenR, $location){
-  if (!$scope.$parent.server){
-    console.log('nothing')
-        $location.path('/find')
-  }
+}).controller('QueueController', function($http, $scope, $location, jukebox){
+//   if (!$scope.$parent.server){
+//     console.log('nothing')
+// //    $scope.$apply(
+//         $location.path('/find')
+// //    );
+//   }
   $scope.search = function(){
     console.log('k');
     jukebox.search.get({ip:'192.168.7.66:3000',term:'fancy'},function(res){

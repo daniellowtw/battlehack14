@@ -35,10 +35,13 @@ app.post('/track', function(req, res) {
 app.get('/queue', function(req, res) {
     api.getQueue(function(result) {
         res.json(result);
-    });});
+    });
+});
 
-app.get('/upvote/:id', function(req, res) {
-    res.json(notImplemented);
+app.get('/upvote/:track_id/:user_id', function(req, res) {
+    api.upvote(req.params.track_id, req.params.user_id, function(result) {
+        res.json(result);
+    });
 });
 
 // reorder tracks
