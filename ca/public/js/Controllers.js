@@ -91,17 +91,18 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     $location.path('/find')
   }
   $scope.search = function () {
-    jukebox.search.get({ip: $scope.$parent.server, term: $scope.songSearch}, function (res) {
-      if (res.success) {
-        $scope.res = res.results;
-      }
-    });
-    $scope.convert = function (length) {
-      min = (length / 1000 / 60) << 0,
-          sec = (length / 1000) % 60;
+    if ($scope.oldId) clearTimeout($scope.oldId)
 
-      return (min + ':' + sec);
-    };
+    $scope.oldId = setTimeout(function(){
+      $scope.searchingForSong = true;
+      jukebox.search.get({ip: $scope.$parent.server, term: $scope.songSearch}, function (res) {
+        if (res.success) {
+          $scope.res = res.results;
+        }
+        $scope.searchingForSong = false;
+      });
+    }, 100)
+
     $scope.limitFilter = function (obj) {
       var re = new RegExp($scope.search, 'i');
       return !$scope.search || re.test(obj.headline) || re.test(obj.tagline) || re.test(obj.text);
