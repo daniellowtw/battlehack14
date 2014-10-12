@@ -62,6 +62,11 @@ var API = function (config, jambox) {
             });
         }
     };
+    this.time = function(callback) {
+        this.mopidy.playback.getTimePosition().done(function(t){
+            callback(t);
+        });
+    };
 
     this.test = function() {
         return {

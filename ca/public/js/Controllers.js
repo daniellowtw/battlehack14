@@ -1,63 +1,62 @@
-angular.module('Controllers', []).controller('MainController', function($scope, $location, $timeout, $rootScope) {
-  
-  $scope.$on('$routeChangeSuccess', function () {                              
-    $scope.user = Parse.User.current();   
-    if (!$scope.user){
+angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope) {
+
+  $scope.$on('$routeChangeSuccess', function () {
+    $scope.user = Parse.User.current();
+    if (!$scope.user) {
       // no user, so bring them to log in page
       $location.path('/')
-    }                                     
-  });  
+    }
+  });
 
-  $scope.$on('loginSuccess',function(e,user){
+  $scope.$on('loginSuccess', function (e, user) {
     $scope.success = true;
     $scope.user = user;
-    $timeout(function(){
+    $timeout(function () {
       $location.path('/find');
       $scope.success = false;
-    },0);
+    }, 0);
   });
 
-  $scope.$on('changeServer', function(e,server){
+  $scope.$on('changeServer', function (e, server) {
     $scope.server = server;
-    $timeout(function(){
+    $timeout(function () {
       $location.path('/queue');
       $scope.success = false;
-    },0);
+    }, 0);
   });
 
-  $scope.logOut = function() {
+  $scope.logOut = function () {
     Parse.User.logOut();
     $scope.user = Parse.User.current();
     $location.path('/');
   }
 
 
-
-}).controller('HomeController', function($scope, $location) {
+}).controller('HomeController', function ($scope, $location) {
   // if user is already logged in, redirect to find server
-  if ($scope.$parent.user){
+  if ($scope.$parent.user) {
     $location.path('/find')
   }
-  $scope.logReg = function(){
+  $scope.logReg = function () {
     console.log($scope.username, $scope.password);
     Parse.User.logIn($scope.username, $scope.password, {
-      success: function(user){
-        $scope.$emit('loginSuccess',user);
+      success: function (user) {
+        $scope.$emit('loginSuccess', user);
         $scope.error = false;
         $scope.$apply();
       },
-      error: function(user, error) {
+      error: function (user, error) {
         var nUser = new Parse.User();
         nUser.set("username", $scope.username);
         nUser.set("password", $scope.password);
         nUser.set("credit", 10);
         nUser.signUp(null, {
-          success: function(user){
-            $scope.$emit('loginSuccess',user);
+          success: function (user) {
+            $scope.$emit('loginSuccess', user);
             $scope.error = false;
             $scope.$apply();
           },
-          error: function(user, error){
+          error: function (user, error) {
             $scope.error = true;
             $scope.$apply();
           }
@@ -66,47 +65,44 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
     });
   };
 
-}).controller('BTController', function($scope, $location, clientTokenR){
+}).controller('BTController', function ($scope, $location, clientTokenR) {
   $scope.$on('$routeChangeSuccess', function () {
-    clientTokenR.get(function(res){
+    clientTokenR.get(function (res) {
       braintree.setup(res.clientToken, 'dropin', {
         container: 'dropin'
       });
     });
   });
-}).controller('FindController', function($http, $scope, clientTokenR){
+}).controller('FindController', function ($http, $scope, clientTokenR) {
   $scope.result = [];
-  $http.get('/jukes').success(function(x){
+  $http.get('/jukes').success(function (x) {
     $scope.result = x
   })
-  $scope.joinServer = function(name){
+  $scope.joinServer = function (name) {
     console.log($scope.serverName);
-    if (name === undefined && $scope.serverName){
+    if (name === undefined && $scope.serverName) {
       var name = $scope.serverName;
     }
     console.log(name);
-    $http.get('/find_jukebox/'+name).success(function(x){
+    $http.get('/find_jukebox/' + name).success(function (x) {
       $scope.$emit('changeServer', x.address);
       console.log(x)
     })
   }
-}).controller('QueueController', function($http, $scope, $location, jukebox){
-//   if (!$scope.$parent.server){
-//     console.log('nothing')
-// //    $scope.$apply(
-//         $location.path('/find')
-// //    );
-//   }
-  $scope.search = function(){
-    jukebox.search.get({ip:'192.168.7.66:3000',term:'fancy'},function(res){
+}).controller('QueueController', function ($http, $scope, $location, jukebox, $resource) {
+  if (!$scope.$parent.server) {
+    $location.path('/find')
+  }
+  $scope.search = function () {
+    jukebox.search.get({ip: $scope.$parent.server, term: $scope.songSearch}, function (res) {
       console.log(res);
-      if(res.success){
+      if (res.success) {
         $scope.res = res.results;
       }
-    }); 
-    $scope.convert = function(length) {
-      min = (length/1000/60) << 0,
-      sec = (length/1000) % 60;
+    });
+    $scope.convert = function (length) {
+      min = (length / 1000 / 60) << 0,
+          sec = (length / 1000) % 60;
 
       return (min + ':' + sec);
     }
@@ -116,13 +112,39 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
     }
   }
   $scope.playlist = [];
-  console.log($scope.$parent.server)
-}).filter('slice', function() {
-  return function(arr, start, end) {
+  $scope.nowPlaying = null;
+
+  $resource("http://" + $scope.$parent.server + "/track").get(null, function (x) {
+    if (x.success) {
+      $scope.nowPlaying = x;
+    }
+  })
+
+
+  $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x) {
+    if (x.success) {
+      $scope.playlist = x.tracks;
+    }
+  })
+
+  $scope.upvote = function (x) {
+    $resource("http://" + $scope.$parent.server + "/upvote/" + x + "/" + $scope.$parent.user.id).save(null, function (x) {
+      if (x.success) {
+        $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x) {
+          if (x.success) {
+            $scope.playlist = x.tracks;
+          }
+        })
+      }
+    })
+
+  }
+}).filter('slice', function () {
+  return function (arr, start, end) {
     if (arr) return arr.slice(start, end);
   };
-}).controller('PrefController', function($http, $scope, clientTokenR, $location){
-  $scope.logout = function(){
+}).controller('PrefController', function ($http, $scope, clientTokenR, $location) {
+  $scope.logout = function () {
     Parse.User.logOut();
     $location.path('/');
   }
