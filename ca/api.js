@@ -7,7 +7,6 @@ module.exports = function(Parse) {
     var User = Parse.Object.extend("User");
     return {
         findJukebox: function(name, cb) {
-            var name = name.toUpperCase();
             var query = new Parse.Query(jukeboxes);
             query.equalTo("name", name);
             query.find({
@@ -28,7 +27,6 @@ module.exports = function(Parse) {
         },
 
         saveJukebox: function(name, address, cb) {
-            var name = name.toUpperCase();
             var query = new Parse.Query(jukeboxes);
             query.equalTo("name", name);
             query.find({
