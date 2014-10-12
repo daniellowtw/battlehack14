@@ -15,8 +15,8 @@ var Queue = function() {
 					details: []
 				}
 			};
-			this.q.append(item);
-			result.append(item);
+			this.q.push(item);
+			result.push(item);
 		}
 		return result;
 	};
@@ -58,7 +58,7 @@ var Queue = function() {
 					}
 				}
 				if (found == false) {
-					votes.details.append({
+					votes.details.push({
 						user_id: user_id,
 						pref: {},
 						votes: 1
