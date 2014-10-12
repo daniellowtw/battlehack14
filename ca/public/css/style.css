@@ -48,3 +48,46 @@ table.playlist th {
 	margin-left: 5px;
 	color: #ccc;
 }
+.server-item:hover, .server-item:active {
+	background-color: #4D4D4D;
+	color: #AFAFAF;
+	cursor:pointer;
+}
+
+.server-name {
+	color: white;
+	margin-right: 10px;
+	font-size: 1.4em;
+	text-transform: uppercase;
+	}
+
+
+@media (max-width: 500px) {
+	.btn {
+		width:100%;
+		border-radius:0 0 4px 4px;
+	}
+	#jambox {
+		border-color:white;
+		border-bottom:0;
+		border-radius:4px 4px 0 0;
+	}
+	.form-group {
+		margin-bottom:0;
+	}
+}
+
+@media screen {
+	.btn {
+		border-radius:0 4px 4px 0;
+	}
+	#jambox {
+		border-color:white;
+		border-bottom:0;
+		border-radius:4px 0 0 4px;
+		margin-right:0;
+	}
+	.form-group {
+		margin-bottom:0;
+	}
+}
