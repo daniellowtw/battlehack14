@@ -155,6 +155,13 @@ $scope.adminMode =false;
     });
   };
 
+  $scope.skip = function() {
+    $resource("http://" + $scope.$parent.server + "/skipvote/" + $scope.$parent.user.id + "/" + x).save(null, function (x) {
+      console.log("Trying");
+      if (x.success) {}
+    });
+  };
+
   $scope.upvote = function (x) {
     $resource("http://" + $scope.$parent.server + "/upvote/" + x + "/" + $scope.$parent.user.id).save(null, function (x) {
       if (x.success) {

@@ -53,7 +53,7 @@ var API = function (config, jambox, socket) {
     };
 
     this.skipvote = function(user_id) {
-        // TODO: should check this is a valid user_id
+        // TODO*: should check this is a valid user_id
         for (var i = 0; i < this.skipvotes.length; i++) {
             if (this.skipvotes[i] === user_id) {
                 // this user has already tried to skip the track
