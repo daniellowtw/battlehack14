@@ -28,13 +28,14 @@ var api = new API({
 });
 module.exports.api = api;
 
-require("./routes");
 
 app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
- });
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+
+require("./routes");
 
 // any requested page not routed by the above should result in a 404
 app.get('/*', function(req, res) {
