@@ -82,7 +82,7 @@
 							</span>
                         </td>
                         <td style="color:#ccc;">{{track.length | date:'mm:ss'}}</td>
-                        <td><a href=""><span class="glyphicon glyphicon-plus pull-right"></span></a></td>
+						<td><span ng-click="addTrack(track.uri)" data-dismiss="modal" class="glyphicon glyphicon-plus pull-right"></span></td>
                     </tr>
                 </table>
                 <h3>Soundcloud</h3>
@@ -101,7 +101,7 @@
 							</span>
                         </td>
                         <td style="color:#ccc;">{{track.length | date:'mm:ss'}}</td>
-                        <td><a href=""><span class="glyphicon glyphicon-plus pull-right"></span></a></td>
+						<td><span ng-click="addTrack(track.uri)" data-dismiss="modal" class="glyphicon glyphicon-plus pull-right"></span></td>
                     </tr>
                 </table>
                 <h3>Server</h3>
@@ -120,7 +120,7 @@
 							</span>
                         </td>
                         <td style="color:#ccc;">{{track.length | date:'mm:ss'}}</td>
-                        <td><a href=""><span class="glyphicon glyphicon-plus pull-right"></span></a></td>
+						<td><span ng-click="addTrack(track.uri)" data-dismiss="modal" class="glyphicon glyphicon-plus pull-right"></span></td>
                     </tr>
                 </table>
             </div>

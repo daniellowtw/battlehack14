@@ -37,7 +37,11 @@ var API = function (config, jambox) {
                 // don't have anything to particularly announce when we start playing a track...
             });
         } else {
-            console.log("Nothing in queue!");   
+            console.log("Nothing in queue!");  
+        }
+
+        if (this.queue.length() < 3 && this.queue.length() > 0) {
+            //notify users that now would be a good time to add more content
         }
     };
     
@@ -98,7 +102,7 @@ var API = function (config, jambox) {
                         parent.onTrackEnd();
                 });
                 // N.B. return value may be empty array (if we played immediately)
-                callback(queueTracks);
+                callback({"success":"true","tracks":queueTracks});
             });
 
             

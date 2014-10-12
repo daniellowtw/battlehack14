@@ -40,7 +40,7 @@ table.playlist th {
 .playlist .fa-arrow-circle-o-up {
 	line-height:1em;
 }
-.playlist td:hover .fa-arrow-circle-o-up {
+.playlist td:hover .glyphicon, .playlist td:hover .fa{
 	color:#2a9fd6;
 	cursor: pointer;
 }
