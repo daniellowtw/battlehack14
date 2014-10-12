@@ -15,9 +15,14 @@
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="server in result">
             <div class="row">
+
                 <div class="col-xs-10">
-                    {{server.name}} <br>
-                    <small>{{server.address}}</small>
+                
+                <button class="btn btn-default" ng-click="deleteServer(server)" ng-show="adminMode">
+                	
+                <i class="fa fa-times" ></i>
+                </button>
+                    {{server.name}} - <small>{{server.address}}</small> 
                 </div>
                 <div class="col-xs-2">
                 <div class="pull-right">
