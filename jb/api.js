@@ -98,7 +98,7 @@ var API = function (config, jambox) {
                         parent.onTrackEnd();
                 });
                 // N.B. return value may be empty array (if we played immediately)
-                callback(queueTracks);
+                callback({"success":"true","tracks":queueTracks});
             });
 
             

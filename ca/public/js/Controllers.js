@@ -79,14 +79,11 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     $scope.result = x
   })
   $scope.joinServer = function (name) {
-    console.log($scope.serverName);
     if (name === undefined && $scope.serverName) {
       var name = $scope.serverName;
     }
-    console.log(name);
     $http.get('/find_jukebox/' + name).success(function (x) {
       $scope.$emit('changeServer', x.address);
-      console.log(x)
     })
   }
 }).controller('QueueController', function ($http, $scope, $location, jukebox, $resource) {
@@ -95,7 +92,6 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   }
   $scope.search = function () {
     jukebox.search.get({ip: $scope.$parent.server, term: $scope.songSearch}, function (res) {
-      console.log(res);
       if (res.success) {
         $scope.res = res.results;
       }
@@ -105,12 +101,12 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
           sec = (length / 1000) % 60;
 
       return (min + ':' + sec);
-    }
+    };
     $scope.limitFilter = function (obj) {
       var re = new RegExp($scope.search, 'i');
       return !$scope.search || re.test(obj.headline) || re.test(obj.tagline) || re.test(obj.text);
-    }
-  }
+    };
+  };
   $scope.playlist = [];
   $scope.nowPlaying = null;
 
@@ -118,14 +114,24 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     if (x.success) {
       $scope.nowPlaying = x;
     }
-  })
+  });
 
 
   $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x) {
     if (x.success) {
       $scope.playlist = x.tracks;
     }
-  })
+  });
+
+  $scope.addTrack = function (uri) {
+    $http.post("http://" + $scope.$parent.server + "/track",{uri:uri}).success(function(x) {
+        $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x2) {
+          if (x2.success) { 
+            $scope.playlist = x2.tracks;
+          }
+        });
+    });
+  };
 
   $scope.upvote = function (x) {
     $resource("http://" + $scope.$parent.server + "/upvote/" + x + "/" + $scope.$parent.user.id).save(null, function (x) {
@@ -134,11 +140,11 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
           if (x.success) {
             $scope.playlist = x.tracks;
           }
-        })
+        });
       }
-    })
+    });
 
-  }
+  };
 }).filter('slice', function () {
   return function (arr, start, end) {
     if (arr) return arr.slice(start, end);
