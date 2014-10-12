@@ -28,3 +28,14 @@ table.playlist th {
 	font-weight: normal;
 	letter-spacing: 1px;
 }
+.playlist .fa-arrow-circle-o-up {
+	line-height:1em;
+}
+.playlist td:hover .fa-arrow-circle-o-up {
+	color:#2a9fd6;
+	cursor: pointer;
+}
+.upvote-count {
+	margin-left: 5px;
+	color: #ccc;
+}

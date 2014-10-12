@@ -88,7 +88,7 @@ var API = function (config) {
                 for (var i = 0; i < results.length; i++) {
                     var tracks = [];
                     if (results[i].tracks) {
-                        tracks = results[i].tracks.slice(0,10);
+                        tracks = results[i].tracks;//.slice(0,10);
                     }
                     switch (results[i].uri.split(":")[0]) {
                         case "soundcloud":
