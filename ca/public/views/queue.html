@@ -9,7 +9,7 @@
 					</span>
 			</span>
                 </h3>
-                <h4 id="nowplayingTitle">{{nowPlaying.track.artists[0].name}} - {{nowPlaying.track.name}}</h4>
+                <h4 id="nowplayingTitle"><i ng-class="getClass(nowPlaying.track.uri)" class="fa fa-lg"></i>  {{nowPlaying.track.artists[0].name}} - {{nowPlaying.track.name}}</h4>
 
                 <h3 class="title">Coming up</h3>
                 <table class="playlist table table-striped">
@@ -33,7 +33,7 @@
 </div>
 
 <div class="row">
-    <button class="btn btn-primary btn-lg col-xs-4 col-xs-offset-4" data-toggle="modal" data-target="#addsong">Add
+    <button class="btn btn-primary btn-lg col-xs-4 col-xs-offset-4" data-toggle="modal" style="border-radius:4px;" data-target="#addsong">Add
         song
     </button>
 </div>
