@@ -50,7 +50,7 @@
 
         <div id="credit"></div>
         <div class="page-header">
-            <h1>Credit</h1>
+            <h1>Credit <span class="text-muted">({{user.attributes.credit}})</span></h1>
         </div>
         <p class="lead">
             Add credits now!
@@ -59,18 +59,17 @@
         <div class="row">
             <div class="col-xs-4">
                 <div class="well well-sm">
-                    10 Credit
-                    <button class="btn btn-default" ng-click="addCredit(10)">Buy</button>
+                    <a href="/braintree/10">10 Credit</a>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="well well-sm">
-                    50 Credit
+                    <a href="/braintree/50">50 Credit</a>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="well well-sm">
-                    100 Credit
+                    <a href="/braintree/100">100 Credit</a>
                 </div>
             </div>
         </div>
