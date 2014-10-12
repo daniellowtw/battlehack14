@@ -101,7 +101,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
         }
         $scope.searchingForSong = false;
       });
-    }, 100)
+    }, 400)
 
     $scope.limitFilter = function (obj) {
       var re = new RegExp($scope.search, 'i');

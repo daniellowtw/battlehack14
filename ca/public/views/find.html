@@ -1,33 +1,28 @@
 <div class="jumbotron">
-    <h1>Connect to Jambox:</h1>
+    <h1>Connect to a Jambox</h1>
     <div class="row">
         <p>
+    
 
+        </p>
+    </div>
+    <div class="row">
+    <ul class="list-group">
+        <li class="list-group-item server-item" ng-repeat="server in result">
+            <div class="row" ng-click="joinServer(server.name)">
+                <div class="col-xs-12">
+                    <span class="server-name">{{server.name}}</span><small>{{server.address}}</small>
+                </div>
+            </div>
+        </li>
+    </ul>
+    </div>
+    <h5>Or enter a Jambox ID</h5>
     <form class="form-inline" role="form">
         <div class="form-group">
             <input type="text" class="form-control" id="jambox" placeholder="Jambox ID" ng-model="serverName">
         </div>
         <button type="submit" class="btn btn-default" ng-click="joinServer()">Connect</button>
     </form>
-        </p>
-    </div>
-    <div class="row">
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="server in result">
-            <div class="row">
-                <div class="col-xs-10">
-                    {{server.name}} <br>
-                    <small>{{server.address}}</small>
-                </div>
-                <div class="col-xs-2">
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-default btn-sm" ng-click="joinServer(server.name)">Connect</button>
-                </div>
-                </div>
-
-            </div>
-        </li>
-    </ul>
-    </div>
 
 </div>

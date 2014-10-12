@@ -48,3 +48,8 @@ table.playlist th {
 	margin-left: 5px;
 	color: #ccc;
 }
+.server-item:hover, .server-item:active {
+	background-color: #4D4D4D;
+	color: #AFAFAF;
+	cursor:pointer;
+}
