@@ -11,9 +11,15 @@ var API = function (config) {
         parent.ready = true;
     });
 
-    this.mopidy.on("event:track_playback_ended", function() {
-        console.log("track playbacj ended");
-    })
+    this.mopidy.on("event:trackPlaybackEnded", function() {
+        // TODO: tell daniel that track has ended
+        // TODO: delete first song from tracklist
+    });
+
+    this.mopidy.on("event:trackPlaybackStarted", function() {
+        console.log("track started");
+    });
+    
     
     this.upvote = function(id, cb) {
         console.log("upvoting id " + id);
