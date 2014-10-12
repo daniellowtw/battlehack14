@@ -51,4 +51,11 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
       });
     });
   });
+}).controller('QueueController', function($scope, jukebox){
+  $scope.search = function(){
+    console.log('k');
+    jukebox.search.get({ip:'192.168.7.66:3000',term:'fancy'},function(res){
+      console.log(res);
+    });    
+  }
 });
