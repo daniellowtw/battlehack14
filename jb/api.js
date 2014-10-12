@@ -40,7 +40,7 @@ var API = function (config) {
     
     this.upvote = function(track_id, user_id, callback) {
         //TODO: Check with ca whether user have credit (NOT FOR DEMO)
-        this.queue.upvote(track_id, user_id);
+        this.queue.vote(track_id, user_id);
         callback({success:true});
     };
 

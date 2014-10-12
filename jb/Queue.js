@@ -37,8 +37,8 @@ var Queue = function() {
 	this.order = function () {
 		this.q.sort(function(a,b) {
 			if (a.votes.total == b.votes.total)
-				return b.id - a.id;
-			return a.votes.total - b.votes.total;
+				return a.id - b.id;
+			return b.votes.total - a.votes.total;
 		});
 	};
 
