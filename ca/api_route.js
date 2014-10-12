@@ -71,6 +71,12 @@ app.get('/danger/deduct/:id', function(req, res) {
     })
 })
 
+app.get('/danger/add/:id/:amount', function(req, res) {
+    api.addCredit(req.params.id, req.params.amount, function(x) {
+        res.json(x)
+    })
+})
+
 app.get('/danger/add/:id', function(req, res) {
     api.addCredit(req.params.id, 10, function(x) {
         res.json(x)
