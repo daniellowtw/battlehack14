@@ -4,4 +4,12 @@ angular.module('Services', []).run(function(){
 	return $resource('api/ctoken', {}, {
 		get: {method:'GET'}
 	});
+}]).factory('jukebox', ['$resource', function($resource) {
+		var jb = {};
+		jb.search = $resource('http://:ip/search/:term', {}, {});
+
+		// return $resource('http://' + ip + '/', {}, {
+		//   get: {method:'GET'}
+		// });
+    return jb;
 }]);

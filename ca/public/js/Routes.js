@@ -16,22 +16,17 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 
 		.when('/queue', {
 			templateUrl: 'views/queue.html',
-			// controller: 'GeekController'	
+			controller: 'QueueController'	
 		})
 
-		// .when('/geeks', {
-		// 	templateUrl: 'views/geek.html',
-		// 	controller: 'GeekController'	
-		// })
-
 		.when('/find', {
-			templateUrl: 'views/find.html'
-			// controller: 'GeekController'	
+			templateUrl: 'views/find.html',
+			controller: 'FindController'	
 		})
 
 		.when('/prefs', {
-			templateUrl: 'views/prefs.html'
-			// controller: 'GeekController'	
+			templateUrl: 'views/prefs.html',
+			controller: 'PrefController'	
 		});
 
 

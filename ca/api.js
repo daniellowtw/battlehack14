@@ -4,18 +4,50 @@ module.exports = function(Parse) {
     var jukeboxes = Parse.Object.extend("jukeboxes");
     var User = Parse.Object.extend("User");
     return {
-        saveJukebox: function(name, address, cb) {
-            console.log(name, address);
-            // var jukeboxes = Parse.Object.extend("jukeboxes");
-            var instance = new jukeboxes();
-            instance.save({
-                name: name,
-                address: address
-            }).then(function(object) {
+        findJukebox: function(name, cb) {
+            var query = new Parse.Query(jukeboxes);
+            query.equalTo("name", name);
+            query.find({
+                success: function(results) {
+                    // Do something with the returned Parse.Object values
+                    if (results.length == 1) {
+                        cb(results)
+                    } else {
+                        cb({error:"No such server"})
+                    }
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            })
+        },
 
-                console.log("yay! it worked");
-                cb(object)
-            });
+        saveJukebox: function(name, address, cb) {
+            var query = new Parse.Query(jukeboxes);
+            query.equalTo("name", name);
+            query.find({
+                success: function(results) {
+                    // Do something with the returned Parse.Object values
+                    if (results.length > 0) {
+                        cb({
+                            error: "Name already exist"
+                        })
+                    } else {
+                        var instance = new jukeboxes();
+                        instance.save({
+                            name: name,
+                            address: address
+                        }).then(function(object) {
+
+                            console.log("yay! it worked");
+                            cb(object)
+                        });
+                    }
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            })
         },
 
         deleteJukebox: function(objID, cb) {

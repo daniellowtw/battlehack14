@@ -21,6 +21,19 @@ module.exports.app = app;
 var api_route      = require('./api_route');
 
 
+// Set up parse stuff
+Parse.initialize(config.appID, config.javascriptKey);
+ 
+// expose these for other files to use
+module.exports.config = config;
+module.exports.Parse = Parse;
+module.exports.express = express;
+module.exports.app = app;
+
+// To test server API for parse
+var api_route      = require('./api_route')
+
+
 // get all data/stuff of the body (POST) parameters
 app.use(bodyParser.json()); // parse application/json 
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
