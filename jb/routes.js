@@ -45,7 +45,9 @@ app.post('/upvote/:track_id/:user_id', function(req, res) {
 });
 
 app.post('/skipvote/:user_id', function(req, res) {
-    api.skipvote(req.params.track_id, req.params.user_id, function(result) {
+    console.log("hello");
+    api.skipvote(req.params.user_id, function(result) {
+        console.log("hi");
         res.json(result);
     });
 });
