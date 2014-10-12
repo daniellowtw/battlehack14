@@ -90,6 +90,19 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   if (!$scope.$parent.server) {
     $location.path('/find')
   }
+
+  $scope.getClass = function (uri) {
+    if (uri.substring(0,3) == "spo") {
+      return "fa-spotify";
+    } else if (uri.substring(0,3) == "sou") {
+      return "fa-soundcloud";
+    } else if (uri.substring(0,3) == "loc") {
+      return "fa-file-audio-o";
+    } else {
+      return "";
+    }
+  };
+
   $scope.search = function () {
     if ($scope.oldId) clearTimeout($scope.oldId)
 
