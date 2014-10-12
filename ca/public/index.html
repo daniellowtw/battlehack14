@@ -13,6 +13,9 @@
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+	<link rel="stylesheet" href="jquery-ui.min.css"> <!-- custom styles -->
+	<link rel="stylesheet" href="jquery-ui.structure.min.css"> <!-- custom styles -->
+	<link rel="stylesheet" href="jquery-ui.theme.min.css"> <!-- custom styles -->
 
 	<!-- JS -->
 	<script src="libs/jquery/dist/jquery.js"></script>
@@ -49,7 +52,7 @@
                 <li ng-hide="server"><a href="/find">Connect</a></li>
 				<li ng-show="user"><a href="/prefs">{{user.attributes.username}}</a></li>
 				<li class="divider"></li>
-				<li ng-show="user"><a href="/prefs?scrollTo=credit">credits: {{user.attributes.credit}}</a></li>
+				<li ng-show="user"><a href="/prefs?scrollTo=credit">credits: {{user.get('credit')}}</a></li>
 				<li class="divider"></li>
 				<li ng-show="user"><a ng-click="logOut()" class="pointer"><span class="label label-danger">log out</span></a></li>
 			</ul>
@@ -63,6 +66,14 @@
 	<div ng-view></div>
 
 	<div class="admin_button" style="position: absolute; background:#222222; left:0; top:0; z-index:9999; height: 50px; width:50px;" ng-click="adminButton()"></div>
+	<div id="slider">
+		
+	</div>
+	<script>
+	$(function() {
+    $( "#slider" ).slider();
+  });
+	</script>
 
 </div>
 </body>
