@@ -116,6 +116,12 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
       return !$scope.search || re.test(obj.headline) || re.test(obj.tagline) || re.test(obj.text);
     };
   };
+
+  // on new message or new user updates, simply update our list of users
+  socketService.on('nowPlayingUpdate', function(track) {
+    console.log(track);
+  });
+
   $scope.playlist = [];
   $scope.nowPlaying = null;
 
