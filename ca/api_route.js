@@ -18,7 +18,7 @@ app.get('/add/:name/:address', function(req, res) {
 app.get('/find_jukebox/:name', function(req, res) {
     // TODO Check duplicate
     api.findJukebox(req.params.name, function(x) {
-        res.json(x)
+        res.json(x[0])
     });
 });
 

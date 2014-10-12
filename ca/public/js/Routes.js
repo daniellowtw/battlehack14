@@ -16,7 +16,7 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 
 		.when('/queue', {
 			templateUrl: 'views/queue.html',
-			// controller: 'GeekController'	
+			controller: 'QueueController'
 		})
 
 		// .when('/geeks', {

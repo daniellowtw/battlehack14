@@ -10,8 +10,16 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
     $timeout(function(){
       $location.path('/find');
       $scope.success = false;
-    },1500);
+    },0);
   });
+
+  $scope.$on('changeServer', function(e,server){
+    $scope.server = server;
+    $timeout(function(){
+      $location.path('/queue');
+      $scope.success = false;
+    },0);
+  })
 
 }).controller('HomeController', function($scope) {
 
@@ -64,7 +72,17 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
     }
     console.log(name);
     $http.get('/find_jukebox/'+name).success(function(x){
+      $scope.$emit('changeServer', x.address);
       console.log(x)
     })
   }
+}).controller('QueueController', function($http, $scope, clientTokenR, $location){
+  if (!$scope.$parent.server){
+    console.log('nothing')
+//    $scope.$apply(
+        $location.path('/find')
+//    );
+  }
+  $scope.playlist = [];
+  console.log($scope.$parent.server)
 });
