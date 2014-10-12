@@ -18,6 +18,10 @@ module.exports = function(app) {
 		});
 	});
 
+	app.post('/pay', function (req, res) {
+		//nope
+	});
+
 	// frontend routes =========================================================
 	// route to handle all angular requests
 	app.get('*', function(req, res) {
