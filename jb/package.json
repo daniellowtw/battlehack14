@@ -4,7 +4,8 @@
   "dependencies": {
         "express": "latest",
         "body-parser": "latest",
-        "mopidy": "latest"
+        "mopidy": "latest",
+        "socket.io":"latest"
   }
 }
 

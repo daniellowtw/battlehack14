@@ -5,7 +5,7 @@ var serverAddress = config.cserver;
 var Mopidy = require("mopidy");
 var Queue = require("./Queue.js");
 
-var API = function (config, jambox) {
+var API = function (config, jambox, socket) {
 
     this.mopidy = new Mopidy(config);
     this.queue = new Queue();
@@ -23,6 +23,7 @@ var API = function (config, jambox) {
 
     this.mopidy.on("event:trackPlaybackStarted", function() {
         console.log("track started");
+        socket.sendNowPlaying();
     });
     
     this.onTrackEnd = function () {
@@ -37,14 +38,18 @@ var API = function (config, jambox) {
                 // don't have anything to particularly announce when we start playing a track...
             });
         } else {
-            console.log("Nothing in queue!");   
+            console.log("Nothing in queue!");  
+        }
+
+        if (this.queue.length() < 3 && this.queue.length() > 0) {
+            //notify users that now would be a good time to add more content
         }
     };
     
     this.upvote = function(track_id, user_id, callback) {
         //TODO: Check with ca whether user have credit (NOT FOR DEMO)
         this.queue.vote(track_id, user_id);
-        callback({success:true});
+        callback({success:true, track:this.queue[track_id]});
     };
 
     this.skipvote = function(user_id) {

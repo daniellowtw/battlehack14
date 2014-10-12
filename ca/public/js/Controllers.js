@@ -1,5 +1,12 @@
 angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope) {
 
+$scope.adminMode =false;
+  $scope.adminButton = function(){
+    $scope.adminMode = !$scope.adminMode;
+    console.log('user', $scope.user)
+    console.log('admin mode');
+  }
+
   $scope.$on('$routeChangeSuccess', function () {
     $scope.user = Parse.User.current();
     $scope.user.fetch();
@@ -84,6 +91,14 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $http.get('/jukes').success(function (x) {
     $scope.result = x
   })
+  $scope.deleteServer = function (server){
+    console.log(server);
+    $http.get('/delete/'+server.objectId).success(function(x){
+      $http.get('/jukes').success(function (x) {
+        $scope.result = x
+      })
+    })
+  }
   $scope.joinServer = function (name) {
     if (name === undefined && $scope.serverName) {
       var name = $scope.serverName;
@@ -114,6 +129,12 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
       return !$scope.search || re.test(obj.headline) || re.test(obj.tagline) || re.test(obj.text);
     };
   };
+
+  // on new message or new user updates, simply update our list of users
+  socketService.on('nowPlayingUpdate', function(track) {
+    console.log(track);
+  });
+
   $scope.playlist = [];
   $scope.nowPlaying = null;
 
@@ -143,6 +164,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $scope.upvote = function (x) {
     $resource("http://" + $scope.$parent.server + "/upvote/" + x + "/" + $scope.$parent.user.id).save(null, function (x) {
       if (x.success) {
+        console.log("does this work?", x.track);
         $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x) {
           if (x.success) {
             $scope.playlist = x.tracks;
@@ -160,5 +182,12 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $scope.logout = function () {
     Parse.User.logOut();
     $location.path('/');
+  }
+
+  $scope.addCredit = function(amount){
+    $http.get('/danger/add/'+$scope.user.getSessionToken()+"/"+amount).success(function(x){
+      console.log("successfully added "+amount);
+      $scope.user = Parse.User.current();
+    }).error(function(e,f){console.log(e,f)})
   }
 });
