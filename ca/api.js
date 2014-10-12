@@ -17,7 +17,7 @@ module.exports = function(Parse) {
                     }
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    console.log("Error: " + error.code + " " + error.message);
                 }
             })
         },
@@ -45,7 +45,7 @@ module.exports = function(Parse) {
                     }
                 },
                 error: function(error) {
-                    alert("Error: " + error.code + " " + error.message);
+                    console.log("Error: " + error.code + " " + error.message);
                 }
             })
         },
