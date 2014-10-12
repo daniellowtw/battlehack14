@@ -25,8 +25,8 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 		// })
 
 		.when('/find', {
-			templateUrl: 'views/find.html'
-			// controller: 'GeekController'	
+			templateUrl: 'views/find.html',
+			controller: 'FindController'	
 		})
 
 		.when('/prefs', {

@@ -81,10 +81,28 @@ var API = function (config) {
         var words = query.split(" ");
         if (this.ready) {
             this.mopidy.library.search({'any': words}).done(function(results) {
-                callback({
-                    "success": true,
-                    "results": results
-                });
+                var result = {
+                    success: true,
+                    results: {}
+                };
+                for (var i = 0; i < results.length; i++) {
+                    var tracks = [];
+                    if (results[i].tracks) {
+                        tracks = results[i].tracks.slice(0,10);
+                    }
+                    switch (results[i].uri.split(":")[0]) {
+                        case "soundcloud":
+                            result.results.soundcloud = tracks;
+                        break;
+                        case "local":
+                            result.results.local = tracks;
+                        break;
+                        case "spotify":
+                            result.results.spotify = tracks;
+                        break;
+                    }
+                }
+                callback(result);
             });
         } else {
             callback({
