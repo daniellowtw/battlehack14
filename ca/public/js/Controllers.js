@@ -1,8 +1,12 @@
-angular.module('Controllers', []).controller('MainController', function($scope, $location, $timeout) {
-
-  $scope.$on('$routeChangeSuccess', function () {
-    $scope.user = Parse.User.current();
-  });
+angular.module('Controllers', []).controller('MainController', function($scope, $location, $timeout, $rootScope) {
+  
+  $scope.$on('$routeChangeSuccess', function () {                              
+    $scope.user = Parse.User.current();   
+    if (!$scope.user){
+      // no user, so bring them to log in page
+      $location.path('/')
+    }                                     
+  });  
 
   $scope.$on('loginSuccess',function(e,user){
     $scope.success = true;
@@ -21,8 +25,13 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
     },0);
   })
 
-}).controller('HomeController', function($scope) {
 
+
+}).controller('HomeController', function($scope, $location) {
+  // if user is already logged in, redirect to find server
+  if ($scope.$parent.user){
+    $location.path('/find')
+  }
   $scope.logReg = function(){
     console.log($scope.username, $scope.password);
     Parse.User.logIn($scope.username, $scope.password, {
@@ -62,7 +71,6 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
 }).controller('FindController', function($http, $scope, clientTokenR){
   $scope.result = [];
   $http.get('/jukes').success(function(x){
-    // $scope.$apply($scope.result = x)
     $scope.result = x
   })
   $scope.joinServer = function(name){
@@ -79,10 +87,19 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
 }).controller('QueueController', function($http, $scope, clientTokenR, $location){
   if (!$scope.$parent.server){
     console.log('nothing')
-//    $scope.$apply(
         $location.path('/find')
-//    );
+  }
+  $scope.search = function(){
+    console.log('k');
+    jukebox.search.get({ip:'192.168.7.66:3000',term:'fancy'},function(res){
+      console.log(res);
+    });    
   }
   $scope.playlist = [];
   console.log($scope.$parent.server)
+}).controller('PrefController', function($http, $scope, clientTokenR, $location){
+  $scope.logout = function(){
+    Parse.User.logOut();
+    $location.path('/');
+  }
 });

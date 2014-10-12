@@ -16,13 +16,8 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 
 		.when('/queue', {
 			templateUrl: 'views/queue.html',
-			controller: 'QueueController'
+			controller: 'QueueController'	
 		})
-
-		// .when('/geeks', {
-		// 	templateUrl: 'views/geek.html',
-		// 	controller: 'GeekController'	
-		// })
 
 		.when('/find', {
 			templateUrl: 'views/find.html',
@@ -30,8 +25,8 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 		})
 
 		.when('/prefs', {
-			templateUrl: 'views/prefs.html'
-			// controller: 'GeekController'	
+			templateUrl: 'views/prefs.html',
+			controller: 'PrefController'	
 		});
 
 
