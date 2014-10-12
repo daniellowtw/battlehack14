@@ -44,6 +44,12 @@ var API = function (config) {
         callback({success:true});
     };
 
+    this.time = function(callback) {
+        this.mopidy.playback.getTimePosition().done(function(t){
+            callback(t);
+        });
+    };
+
     this.test = function() {
         return {
             a: 2
