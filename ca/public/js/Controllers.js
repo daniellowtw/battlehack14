@@ -1,4 +1,4 @@
-angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope, socketService) {
+angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope) {
 
   // on new message or new user updates, simply update our list of users
   // socketService.on('nowPlayingUpdate', function(track) {
@@ -9,7 +9,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     $scope.adminMode = !$scope.adminMode;
     console.log('user', $scope.user)
     console.log('admin mode');
-  }
+  };
 
   $scope.$on('$routeChangeSuccess', function () {
     $scope.user = Parse.User.current();
