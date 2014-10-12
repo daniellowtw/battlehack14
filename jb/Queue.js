@@ -44,7 +44,7 @@ var Queue = function() {
 
 	this.vote = function (q_id, user_id) {
 		// add vote to item with q_id, user_id
-		// reorder!
+        // TODO: should check this is a valid user_id
 		for (var i=0; i<this.q.length; i++) {
 			if (this.q[i].id == q_id) {
 				var votes = this.q[i].votes;
@@ -68,6 +68,7 @@ var Queue = function() {
 				break;
 			}
 		}
+		// reorder!
 		this.order();
 	};
 

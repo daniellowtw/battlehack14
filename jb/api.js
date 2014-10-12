@@ -5,10 +5,11 @@ var serverAddress = config.cserver;
 var Mopidy = require("mopidy");
 var Queue = require("./Queue.js");
 
-var API = function (config) {
+var API = function (config, jambox) {
 
     this.mopidy = new Mopidy(config);
     this.queue = new Queue();
+    this.skipvotes = [];
     this.ready = false;
     var parent = this;
     this.mopidy.on("state:online", function () {
@@ -17,7 +18,6 @@ var API = function (config) {
 
     this.mopidy.on("event:trackPlaybackEnded", function() {
         // TODO: tell daniel that track has ended
-        // TODO: delete first song from tracklist
         parent.onTrackEnd();
     });
 
@@ -26,8 +26,11 @@ var API = function (config) {
     });
     
     this.onTrackEnd = function () {
+        // reset the votes to skip
+        parent.skipvotes = [];
+
+        // play another track if possible
         if (this.queue.length() > 0) {
-            console.log("Going through the queue")
             var track = parent.queue.pop();
             console.log(track);
             this.playTrack(track, function() {
@@ -44,6 +47,21 @@ var API = function (config) {
         callback({success:true});
     };
 
+    this.skipvote = function(user_id) {
+        // TODO: should check this is a valid user_id
+        for (var i = 0; i < this.skipvotes.length; i++) {
+            if (this.skipvotes[i] === user_id) {
+                // this user has already tried to skip the track
+                return;
+            }
+        }
+        this.skipvotes.push(user_id);
+        if (this.skipvotes.length > jambox.skipThreshold) {
+            this.mopidy.playback.stop([true]).done(function() {
+                parent.onTrackEnd();
+            });
+        }
+    };
     this.time = function(callback) {
         this.mopidy.playback.getTimePosition().done(function(t){
             callback(t);
@@ -57,14 +75,10 @@ var API = function (config) {
     };
 
     this.playTrack = function(trackObj, callback) {
-        console.log("Trying to play" );
         var mo = this.mopidy;
         this.mopidy.tracklist.clear().done(function() {
-            console.log("  Cleared");
             mo.tracklist.add({tracks:[trackObj.track]}).done(function(track) {
-                console.log("    added");
                 mo.playback.play().done(function() {
-                    console.log("      played");
                     callback({
                         success:true,
                         track: track
@@ -78,26 +92,11 @@ var API = function (config) {
         if (this.ready) {
             var parent = this;
             this.mopidy.library.lookup({uri:uri}).done(function(tracks) {
-                // var playOnInsert = false;
-                // if (parent.queue.length() < 1) {
-                //     // we will need to start playing after adding stuff
-                //     playOnInsert = true;
-                //     console.log("Going to play: " + parent.queue.length());
-                // }
-
                 var queueTracks = parent.queue.add(tracks);
-                // if (playOnInsert) {
-                //     parent.playUri(parent.queue.pop(), function() {
-                //         // don't have anything to particularly announce when we start playing a track...
-                //     });
-
-                //     // remove the track from the list we're returning
-                //     queueTracks.shift();
-                // }
                 parent.mopidy.playback.getState().done(function(state) {
                     if (state !== "playing")
                         parent.onTrackEnd();
-                })
+                });
                 // N.B. return value may be empty array (if we played immediately)
                 callback(queueTracks);
             });

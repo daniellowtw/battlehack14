@@ -24,7 +24,8 @@ sleep.sleep(6);
 var api = new API({
 	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
 	callingConvention: "by-position-or-by-name",
-	// consume:true
+}, {
+	skipThreshold : 3
 });
 module.exports.api = api;
 
