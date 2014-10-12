@@ -78,6 +78,14 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $http.get('/jukes').success(function (x) {
     $scope.result = x
   })
+  $scope.deleteServer = function (server){
+    console.log(server);
+    $http.get('/delete/'+server.objectId).success(function(x){
+      $http.get('/jukes').success(function (x) {
+        $scope.result = x
+      })
+    })
+  }
   $scope.joinServer = function (name) {
     if (name === undefined && $scope.serverName) {
       var name = $scope.serverName;
