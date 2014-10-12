@@ -45,7 +45,7 @@ for (var i = ifaces[config.interface].length - 1; i >= 0; i--) {
   if (ifaces[config.interface][i].family == 'IPv4') {
     address = ifaces[config.interface][i].address;
   }
-};
+}
 
 // setup cleanup code before making a mess
 var jukeboxID;
@@ -76,20 +76,28 @@ var delServer = function() {
   }).on('error', function(e) {
     throw new Error("Could not delete server");
   });
-}
+};
 
 process.stdin.resume();
 process.on('SIGINT', delServer);
 process.on('exit', delServer);
 process.on('uncaughtException', delServer);
 
+// create a new http server for socket.io to bind to
+var server = require("http").Server(app);
+var io = require("socket.io")(server);
+
+// our socket code is contained in socket.js
+// after including this, socket is a function which we use as a handler on connection
+var socket = require("./socket");
+io.on('connection', socket);
 
 var api = new API({
 	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
 	callingConvention: "by-position-or-by-name",
 }, {
 	skipThreshold : config.skip_threshold,
-});
+}, socket);
 module.exports.api = api;
 
 app.all('*', function(req, res, next) {
@@ -108,6 +116,7 @@ app.get('/*', function(req, res) {
 // set the default directory for templated pages
 app.set("views", __dirname + "/client");
 
+
 // listen on selected port
-app.listen(config.port);
+server.listen(config.port);
 console.log("Jambox running on port " + config.port );

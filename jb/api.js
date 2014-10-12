@@ -5,7 +5,7 @@ var serverAddress = config.cserver;
 var Mopidy = require("mopidy");
 var Queue = require("./Queue.js");
 
-var API = function (config, jambox) {
+var API = function (config, jambox, socket) {
 
     this.mopidy = new Mopidy(config);
     this.queue = new Queue();
@@ -23,6 +23,7 @@ var API = function (config, jambox) {
 
     this.mopidy.on("event:trackPlaybackStarted", function() {
         console.log("track started");
+        socket.sendNowPlaying();
     });
     
     this.onTrackEnd = function () {
