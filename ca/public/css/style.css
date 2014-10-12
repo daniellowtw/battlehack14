@@ -28,6 +28,11 @@ table.playlist th {
 	font-weight: normal;
 	letter-spacing: 1px;
 }
+
+.pointer {
+	cursor: pointer;
+}
+
 .playlist .fa-arrow-circle-o-up {
 	line-height:1em;
 }

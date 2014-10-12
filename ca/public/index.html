@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width' />
 	<base href="/">
 
 	<title>Jambox</title>
@@ -46,6 +47,8 @@
 				<li ng-show="user"><a href="/prefs">{{user.attributes.username}}</a></li>
 				<li class="divider"></li>
 				<li ng-show="user"><a href="/prefs?scrollTo=credit">credits: {{user.attributes.credit}}</a></li>
+				<li class="divider"></li>
+				<li ng-show="user"><a ng-click="logOut()" class="pointer"><span class="label label-danger">log out</span></a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
         </div>
