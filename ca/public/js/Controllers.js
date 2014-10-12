@@ -2,6 +2,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
 
   $scope.$on('$routeChangeSuccess', function () {
     $scope.user = Parse.User.current();
+    $scope.user.fetch();
     if (!$scope.user) {
       // no user, so bring them to log in page
       $location.path('/')
@@ -14,7 +15,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     $timeout(function () {
       $location.path('/find');
       $scope.success = false;
-    }, 0);
+    }, 1000);
   });
 
   $scope.$on('changeServer', function (e, server) {
@@ -32,7 +33,7 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   }
 
 
-}).controller('HomeController', function ($scope, $location) {
+}).controller('HomeController', function ($scope, $location, $resource) {
   // if user is already logged in, redirect to find server
   if ($scope.$parent.user) {
     $location.path('/find')
@@ -53,6 +54,9 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
         nUser.signUp(null, {
           success: function (user) {
             $scope.$emit('loginSuccess', user);
+            $resource('reg/' + user.id).save(null,function(res){
+              console.log(res);
+            });
             $scope.error = false;
             $scope.$apply();
           },
@@ -65,9 +69,11 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
     });
   };
 
-}).controller('BTController', function ($scope, $location, clientTokenR) {
+}).controller('BTController', function ($scope, $location, $routeParams, clientTokenR) {
   $scope.$on('$routeChangeSuccess', function () {
-    clientTokenR.get(function (res) {
+    $scope.amount = $routeParams.amount;
+    clientTokenR.get({id:$scope.user.id},function (res) {
+      console.log(res);
       braintree.setup(res.clientToken, 'dropin', {
         container: 'dropin'
       });
