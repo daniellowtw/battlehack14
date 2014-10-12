@@ -27,6 +27,7 @@ module.exports = function(Parse) {
         },
 
         saveJukebox: function(name, address, cb) {
+            console.log(Parse)
             var query = new Parse.Query(jukeboxes);
             query.equalTo("name", name);
             query.find({
@@ -90,7 +91,7 @@ module.exports = function(Parse) {
         // TODO: Make this safe for production
         addCredit: function(userToken, amount, cb) {
             Parse.User.become(userToken).then(function(user) {
-                user.set('credit', user.get('credit') + amount);
+                user.set('credit', parseInt(user.get('credit')) + parseInt(amount));
                 user.save(null, {
                     success: function(x) {
                         cb(x)

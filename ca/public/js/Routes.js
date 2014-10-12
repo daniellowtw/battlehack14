@@ -8,7 +8,7 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 			controller: 'HomeController'
 		})
 
-		.when('/braintree', {
+		.when('/braintree/:amount', {
 			templateUrl: 'views/braintree.html',
 			controller: 'BTController'
 		})

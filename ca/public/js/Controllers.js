@@ -1,6 +1,10 @@
-angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope) {
+angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope, socketService) {
 
-$scope.adminMode =false;
+  // on new message or new user updates, simply update our list of users
+  // socketService.on('nowPlayingUpdate', function(track) {
+  //   console.log(track);
+  // });
+  $scope.adminMode =false;
   $scope.adminButton = function(){
     $scope.adminMode = !$scope.adminMode;
     console.log('user', $scope.user)
@@ -9,6 +13,7 @@ $scope.adminMode =false;
 
   $scope.$on('$routeChangeSuccess', function () {
     $scope.user = Parse.User.current();
+    $scope.user.fetch();
     if (!$scope.user) {
       // no user, so bring them to log in page
       $location.path('/')
@@ -21,7 +26,7 @@ $scope.adminMode =false;
     $timeout(function () {
       $location.path('/find');
       $scope.success = false;
-    }, 0);
+    }, 1000);
   });
 
   $scope.$on('changeServer', function (e, server) {
@@ -39,7 +44,7 @@ $scope.adminMode =false;
   }
 
 
-}).controller('HomeController', function ($scope, $location) {
+}).controller('HomeController', function ($scope, $location, $resource) {
   // if user is already logged in, redirect to find server
   if ($scope.$parent.user) {
     $location.path('/find')
@@ -60,6 +65,9 @@ $scope.adminMode =false;
         nUser.signUp(null, {
           success: function (user) {
             $scope.$emit('loginSuccess', user);
+            $resource('reg/' + user.id).save(null,function(res){
+              console.log(res);
+            });
             $scope.error = false;
             $scope.$apply();
           },
@@ -72,9 +80,11 @@ $scope.adminMode =false;
     });
   };
 
-}).controller('BTController', function ($scope, $location, clientTokenR) {
+}).controller('BTController', function ($scope, $location, $routeParams, clientTokenR) {
   $scope.$on('$routeChangeSuccess', function () {
-    clientTokenR.get(function (res) {
+    $scope.amount = $routeParams.amount;
+    clientTokenR.get({id:$scope.user.id},function (res) {
+      console.log(res);
       braintree.setup(res.clientToken, 'dropin', {
         container: 'dropin'
       });
@@ -105,6 +115,19 @@ $scope.adminMode =false;
   if (!$scope.$parent.server) {
     $location.path('/find')
   }
+
+  $scope.getClass = function (uri) {
+    if (uri.substring(0,3) == "spo") {
+      return "fa-spotify";
+    } else if (uri.substring(0,3) == "sou") {
+      return "fa-soundcloud";
+    } else if (uri.substring(0,3) == "loc") {
+      return "fa-file-audio-o";
+    } else {
+      return "";
+    }
+  };
+
   $scope.search = function () {
     if ($scope.oldId) clearTimeout($scope.oldId)
 
@@ -123,11 +146,6 @@ $scope.adminMode =false;
       return !$scope.search || re.test(obj.headline) || re.test(obj.tagline) || re.test(obj.text);
     };
   };
-
-  // on new message or new user updates, simply update our list of users
-  socketService.on('nowPlayingUpdate', function(track) {
-    console.log(track);
-  });
 
   $scope.playlist = [];
   $scope.nowPlaying = null;

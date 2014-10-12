@@ -55,15 +55,9 @@ var url = config.cserver + "/add/" +
   encodeURIComponent(config.jambox_name) + "/" +
   encodeURIComponent(address);
 
+console.log("About to try to register server at " + url);
 http.get(url, function(res) {
   console.log("Registered server: " + res.statusCode);
-  // console.log(res);
-  
-  res.on("data", function(chunk) {
-    jukeboxID = JSON.parse(chunk).objectId;
-  });
-}).on('error', function(e) {
-  throw new Error("Could not register server");
 });
 
 var delServer = function() {
@@ -74,6 +68,7 @@ var delServer = function() {
     // console.log(res);
     process.exit();
   }).on('error', function(e) {
+    console.log("Couldn't delete")
     throw new Error("Could not delete server");
   });
 };
@@ -81,23 +76,18 @@ var delServer = function() {
 process.stdin.resume();
 process.on('SIGINT', delServer);
 process.on('exit', delServer);
-process.on('uncaughtException', delServer);
+// process.on('uncaughtException', delServer);
 
 // create a new http server for socket.io to bind to
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
-
-// our socket code is contained in socket.js
-// after including this, socket is a function which we use as a handler on connection
-var socket = require("./socket");
-io.on('connection', socket);
 
 var api = new API({
 	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
 	callingConvention: "by-position-or-by-name",
 }, {
 	skipThreshold : config.skip_threshold,
-}, socket);
+},io);
 module.exports.api = api;
 
 app.all('*', function(req, res, next) {
@@ -119,4 +109,5 @@ app.set("views", __dirname + "/client");
 
 // listen on selected port
 server.listen(config.port);
+// app.listen(config.port);
 console.log("Jambox running on port " + config.port );
