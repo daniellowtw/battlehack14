@@ -28,3 +28,7 @@ table.playlist th {
 	font-weight: normal;
 	letter-spacing: 1px;
 }
+
+.pointer {
+	cursor: pointer;
+}
