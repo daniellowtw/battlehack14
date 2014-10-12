@@ -62,15 +62,18 @@ table.playlist th {
 	}
 
 
-@media (max-width: 500px) {
-	.btn {
+@media (max-width: 770px) {
+	.form-control-feedback {
+		top:0;
+	}
+	#connect {
 		width:100%;
-		border-radius:0 0 4px 4px;
+		border-radius:0;
 	}
 	#jambox {
 		border-color:white;
 		border-bottom:0;
-		border-radius:4px 4px 0 0;
+		border-radius:0;
 	}
 	.form-group {
 		margin-bottom:0;
@@ -78,13 +81,13 @@ table.playlist th {
 }
 
 @media screen {
-	.btn {
-		border-radius:0 4px 4px 0;
+	#connect {
+		border-radius:0 0 4px 4px;
 	}
 	#jambox {
 		border-color:white;
+		border-radius:4px 4px 0 0;
 		border-bottom:0;
-		border-radius:4px 0 0 4px;
 		margin-right:0;
 	}
 	.form-group {
