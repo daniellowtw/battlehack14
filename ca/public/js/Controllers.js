@@ -90,13 +90,10 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
       console.log(x)
     })
   }
-}).controller('QueueController', function($http, $scope, $location, jukebox){
-//   if (!$scope.$parent.server){
-//     console.log('nothing')
-// //    $scope.$apply(
-//         $location.path('/find')
-// //    );
-//   }
+}).controller('QueueController', function($http, $scope, $location, jukebox, $resource){
+   if (!$scope.$parent.server){
+         $location.path('/find')
+   }
   $scope.search = function(){
     console.log('k');
     jukebox.search.get({ip:'192.168.7.66:3000',term:'fancy'},function(res){
@@ -104,7 +101,42 @@ angular.module('Controllers', []).controller('MainController', function($scope, 
     });    
   }
   $scope.playlist = [];
-  console.log($scope.$parent.server)
+  $scope.nowPlaying = null;
+
+  $resource("http://"+ $scope.$parent.server + "/track").get(null,function(x){
+    if (x.success)
+    {
+      $scope.nowPlaying = x;
+    }
+  })
+
+
+  $resource("http://"+ $scope.$parent.server + "/queue").get(null,function(x){
+    if (x.success)
+    {
+      $scope.playlist = x.tracks;
+    }
+  })
+
+  $scope.upvote = function(x){
+    $resource("http://"+ $scope.$parent.server + "/upvote/"+x + "/" + $scope.$parent.user.id).save(null,function(x){
+      if (x.success)
+      {
+        $resource("http://"+ $scope.$parent.server + "/queue").get(null,function(x){
+          if (x.success)
+          {
+            $scope.playlist = x.tracks;
+          }
+        })
+      }
+    })
+
+  }
+
+//  $http.get("192.168.7.66:3000/queue").success(function(x){
+//    console.log("s",$scope.$parent.server, x);
+//  })
+
 }).controller('PrefController', function($http, $scope, clientTokenR, $location){
   $scope.logout = function(){
     Parse.User.logOut();
