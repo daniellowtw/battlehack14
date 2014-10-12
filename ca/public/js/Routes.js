@@ -19,19 +19,14 @@ angular.module('Routes', []).config(['$routeProvider', '$locationProvider', func
 			controller: 'QueueController'	
 		})
 
-		// .when('/geeks', {
-		// 	templateUrl: 'views/geek.html',
-		// 	controller: 'GeekController'	
-		// })
-
 		.when('/find', {
 			templateUrl: 'views/find.html',
 			controller: 'FindController'	
 		})
 
 		.when('/prefs', {
-			templateUrl: 'views/prefs.html'
-			// controller: 'GeekController'	
+			templateUrl: 'views/prefs.html',
+			controller: 'PrefController'	
 		});
 
 
