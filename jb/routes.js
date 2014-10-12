@@ -38,7 +38,7 @@ app.get('/queue', function(req, res) {
     });
 });
 
-app.get('/upvote/:track_id/:user_id', function(req, res) {
+app.post('/upvote/:track_id/:user_id', function(req, res) {
     api.upvote(req.params.track_id, req.params.user_id, function(result) {
         res.json(result);
     });

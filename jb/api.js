@@ -14,10 +14,33 @@ var API = function (config) {
     this.mopidy.on("state:online", function () {
         parent.ready = true;
     });
+
+    this.mopidy.on("event:trackPlaybackEnded", function() {
+        // TODO: tell daniel that track has ended
+        // TODO: delete first song from tracklist
+        parent.onTrackEnd();
+    });
+
+    this.mopidy.on("event:trackPlaybackStarted", function() {
+        console.log("track started");
+    });
+    
+    this.onTrackEnd = function () {
+        if (this.queue.length() > 0) {
+            console.log("Going through the queue")
+            var track = parent.queue.pop();
+            console.log(track);
+            this.playTrack(track, function() {
+                // don't have anything to particularly announce when we start playing a track...
+            });
+        } else {
+            console.log("Nothing in queue!");   
+        }
+    };
     
     this.upvote = function(track_id, user_id, callback) {
         //TODO: Check with ca whether user have credit (NOT FOR DEMO)
-        this.queue.upvote(track_id, user_id);
+        this.queue.vote(track_id, user_id);
         callback({success:true});
     };
 
@@ -27,36 +50,48 @@ var API = function (config) {
         };
     };
 
-    this.playUri = function(uri, callback) {
+    this.playTrack = function(trackObj, callback) {
+        console.log("Trying to play" );
         var mo = this.mopidy;
-        this.mopidy.tracklist.add({uri:uri}).done(function(track) {
-            mo.playback.play();
-            callback({
-                success:true,
-                track: track
+        this.mopidy.tracklist.clear().done(function() {
+            console.log("  Cleared");
+            mo.tracklist.add({tracks:[trackObj.track]}).done(function(track) {
+                console.log("    added");
+                mo.playback.play().done(function() {
+                    console.log("      played");
+                    callback({
+                        success:true,
+                        track: track
+                    });
+                });
             });
         });
     };
 
     this.add = function (uri, callback) {
         if (this.ready) {
-            this.mopidy.lookup(uri).done(function(tracks) {
-                var playOnInsert = false;
-                if (this.queue.length() < 1) {
-                    // we will need to start playing after adding stuff
-                    playOnInsert = true;
-                }
+            var parent = this;
+            this.mopidy.library.lookup({uri:uri}).done(function(tracks) {
+                // var playOnInsert = false;
+                // if (parent.queue.length() < 1) {
+                //     // we will need to start playing after adding stuff
+                //     playOnInsert = true;
+                //     console.log("Going to play: " + parent.queue.length());
+                // }
 
-                var queueTracks = this.queue.add(tracks);
-                if (playOnInsert) {
-                    this.playUri(this.queue.pop(), function() {
-                        // don't have anything to particularly announce when we start playing a track...
-                    });
+                var queueTracks = parent.queue.add(tracks);
+                // if (playOnInsert) {
+                //     parent.playUri(parent.queue.pop(), function() {
+                //         // don't have anything to particularly announce when we start playing a track...
+                //     });
 
-                    // remove the track from the list we're returning
-                    queueTracks.shift();
-                }
-                
+                //     // remove the track from the list we're returning
+                //     queueTracks.shift();
+                // }
+                parent.mopidy.playback.getState().done(function(state) {
+                    if (state !== "playing")
+                        parent.onTrackEnd();
+                })
                 // N.B. return value may be empty array (if we played immediately)
                 callback(queueTracks);
             });

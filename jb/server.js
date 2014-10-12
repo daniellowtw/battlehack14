@@ -23,17 +23,19 @@ sleep.sleep(6);
 
 var api = new API({
 	webSocketUrl: "ws://localhost:6680/mopidy/ws/",
-	callingConvention: "by-position-or-by-name"
+	callingConvention: "by-position-or-by-name",
+	// consume:true
 });
 module.exports.api = api;
 
-require("./routes");
 
 app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
- });
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+
+require("./routes");
 
 // any requested page not routed by the above should result in a 404
 app.get('/*', function(req, res) {
