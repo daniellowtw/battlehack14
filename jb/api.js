@@ -57,22 +57,25 @@ var API = function (config, jambox, io) {
         callback({success:true, track:this.queue[track_id]});
     };
 
-    this.skipvote = function(user_id) {
-        console.log("Attempted skip!");
-        console.log(skipvotes);
+    this.skipvote = function(user_id, callback) {
         // TODO*: should check this is a valid user_id
+        console.log(this.skipvotes);
         for (var i = 0; i < this.skipvotes.length; i++) {
             if (this.skipvotes[i] === user_id) {
                 // this user has already tried to skip the track
-                return;
+                return callback({
+                    success:true, skipcount: this.skipvotes.length
+                });
             }
         }
         this.skipvotes.push(user_id);
+        console.log(this.skipvotes);
         if (this.skipvotes.length > jambox.skipThreshold) {
             this.mopidy.playback.stop([true]).done(function() {
                 parent.onTrackEnd();
             });
         }
+        callback({success: true, skipcount: this.skipvotes.length});
     };
     this.time = function(callback) {
         this.mopidy.playback.getTimePosition().done(function(t){
@@ -141,7 +144,8 @@ var API = function (config, jambox, io) {
             this.mopidy.playback.getCurrentTrack().done(function(track){
                 callback({
                     success: true,
-                    track: track
+                    track: track,
+                    skipcount: parent.skipvotes.length
                 });
             });
         } else {

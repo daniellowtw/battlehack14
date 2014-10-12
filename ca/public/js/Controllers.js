@@ -1,4 +1,19 @@
-angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope) {
+angular.module('Controllers', []).controller('MainController', function ($scope, $location, $timeout, $rootScope, $http) {
+
+  $scope.deductCredit = function(amount){
+    $http.get('/danger/deduct/'+$scope.user.getSessionToken()).success(function(x){
+      console.log("successfully added "+amount);
+      $scope.$emit('updateUserCredit', 1);
+      // $scope.user = Parse.User.current();
+    }).error(function(e,f){console.log(e,f)})
+  }
+
+$scope.$on('updateUserCredit', function(e,value){
+  $scope.user.fetch().then(function(x){
+    $scope.user = x;
+    $scope.$apply()
+  });
+})
 
   // on new message or new user updates, simply update our list of users
   // socketService.on('nowPlayingUpdate', function(track) {
@@ -193,6 +208,10 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $scope.upvote = function (x) {
     $resource("http://" + $scope.$parent.server + "/upvote/" + x + "/" + $scope.$parent.user.id).save(null, function (x) {
       if (x.success) {
+        $http.get('/danger/deduct/'+$scope.user.getSessionToken()).success(function(x){
+          $scope.$emit('updateUserCredit', 1);
+          }).error(function(e,f){console.log(e,f)})
+
         console.log("does this work?", x.track);
         $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x) {
           if (x.success) {
@@ -217,12 +236,5 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $scope.logout = function () {
     Parse.User.logOut();
     $location.path('/');
-  }
-
-  $scope.addCredit = function(amount){
-    $http.get('/danger/add/'+$scope.user.getSessionToken()+"/"+amount).success(function(x){
-      console.log("successfully added "+amount);
-      $scope.user = Parse.User.current();
-    }).error(function(e,f){console.log(e,f)})
   }
 });

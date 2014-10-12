@@ -95,9 +95,11 @@ module.exports = function(Parse) {
                 user.save(null, {
                     success: function(x) {
                         cb(x)
+                        console.log(x)
                     },
-                    error: function(x) {
+                    error: function(x,e) {
                         cb(x)
+                        console.log("error", x,e)
                     }
                 });
             }, function(error) {
@@ -131,7 +133,7 @@ module.exports = function(Parse) {
         addPayment: function(payeeId, amount) {
             var q1 = new Parse.query(Payee);
             q1.get(payeeId, {success:function(x){
-                x.set('amount', x.get('amount') + amount)
+                x.set('amount', x.get('amount') + Number(amount))
                 x.save(null, {success:true})
             }})
         },
