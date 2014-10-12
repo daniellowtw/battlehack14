@@ -184,6 +184,24 @@ $scope.$on('updateUserCredit', function(e,value){
     }
   });
 
+  $scope.updateData = function(){
+
+  $resource("http://" + $scope.$parent.server + "/track").get(null, function (x) {
+    if (x.success) {
+      $scope.nowPlaying = x;
+    }
+  });
+
+
+  $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x) {
+    if (x.success) {
+      $scope.playlist = x.tracks;
+    }
+  });
+  }
+
+  window.setInterval($scope.updateData, 5000);
+
   $scope.addTrack = function (uri) {
     $http.post("http://" + $scope.$parent.server + "/track",{uri:uri}).success(function(x) {
         $resource("http://" + $scope.$parent.server + "/queue").get(null, function (x2) {
@@ -191,6 +209,14 @@ $scope.$on('updateUserCredit', function(e,value){
             $scope.playlist = x2.tracks;
           }
         });
+          $resource("http://" + $scope.$parent.server + "/track").get(null, function (x) {
+    console.log(x);
+
+    if (x.success) {
+      console.log("Successful");
+      $scope.nowPlaying = x;
+    }
+  });
     });
   };
 
