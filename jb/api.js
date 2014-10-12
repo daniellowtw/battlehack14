@@ -58,6 +58,8 @@ var API = function (config, jambox, io) {
     };
 
     this.skipvote = function(user_id) {
+        console.log("Attempted skip!");
+        console.log(skipvotes);
         // TODO*: should check this is a valid user_id
         for (var i = 0; i < this.skipvotes.length; i++) {
             if (this.skipvotes[i] === user_id) {

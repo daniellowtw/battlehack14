@@ -154,7 +154,10 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   $scope.nowPlaying = null;
 
   $resource("http://" + $scope.$parent.server + "/track").get(null, function (x) {
+    console.log(x);
+
     if (x.success) {
+      console.log("Successful");
       $scope.nowPlaying = x;
     }
   });
@@ -177,9 +180,13 @@ angular.module('Controllers', []).controller('MainController', function ($scope,
   };
 
   $scope.skip = function() {
-    $resource("http://" + $scope.$parent.server + "/skipvote/" + $scope.$parent.user.id + "/" + x).save(null, function (x) {
+    console.log("Skipping");
+    $resource("http://" + $scope.$parent.server + "/skipvote/" + $scope.$parent.user.id + "/").save(null, function (x) {
       console.log("Trying");
-      if (x.success) {}
+      if (x.success) {
+        console.log("Succeeded");
+        $scope.nowPlaying.skipcount = x.skipcount;
+      }
     });
   };
 
