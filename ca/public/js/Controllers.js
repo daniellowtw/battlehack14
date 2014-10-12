@@ -116,7 +116,7 @@ $scope.adminMode =false;
         }
         $scope.searchingForSong = false;
       });
-    }, 400)
+    }, 100)
 
     $scope.limitFilter = function (obj) {
       var re = new RegExp($scope.search, 'i');
@@ -175,9 +175,7 @@ $scope.adminMode =false;
   $scope.addCredit = function(amount){
     $http.get('/danger/add/'+$scope.user.getSessionToken()+"/"+amount).success(function(x){
       console.log("successfully added "+amount);
-      $scope.$apply(
       $scope.user = Parse.User.current();
-      )
     }).error(function(e,f){console.log(e,f)})
   }
 });
